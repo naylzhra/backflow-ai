@@ -107,7 +107,7 @@ const KOTA_DATA: KotaData[] = [
     kecamatan: [
       { name: 'Medan Belawan', kelurahan: ['Belawan I', 'Belawan II', 'Belawan Bahari', 'Belawan Bahagia', 'Bagan Deli'] },
       { name: 'Medan Deli', kelurahan: ['Tanjung Mulia', 'Tanjung Mulia Hilir', 'Mabar', 'Mabar Hilir', 'Kota Bangun'] },
-      { name: 'Medan Baru', kelurahan: ['Petisah Hulu', 'Babura', 'Merdeka', 'Darat', 'Babura'] },
+      { name: 'Medan Baru', kelurahan: ['Petisah Hulu', 'Babura', 'Merdeka', 'Darat'] },
     ],
   },
   {
@@ -1012,13 +1012,13 @@ function ScreenResult({
               {[
                 { label: 'Nomor Order', value: 'ORD-2026-4821' },
                 { label: 'Nama Pelanggan', value: 'PT. Sumber Makmur Tbk' },
-                { label: 'Jenis &amp; Berat Muatan', value: 'Tekstil — 4.2 Ton' },
+                { label: 'Jenis & Berat Muatan', value: 'Tekstil — 4.2 Ton' },
                 { label: 'Waktu Jemput', value: '13 Sept 2026 · 08:00 WIB' },
                 { label: 'Jarak Tambahan', value: '+47 km dari rute awal' },
                 { label: 'Status Order', value: 'Siap Jemput' },
               ].map(item => (
                 <div key={item.label}>
-                  <p className="text-xs mb-0.5" style={{ color: '#94A3B8', fontFamily: 'Inter, sans-serif' }} dangerouslySetInnerHTML={{ __html: item.label }} />
+                  <p className="text-xs mb-0.5" style={{ color: '#94A3B8', fontFamily: 'Inter, sans-serif' }}>{item.label}</p>
                   <p className="text-sm font-semibold" style={{ color: '#1B2A40', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{item.value}</p>
                 </div>
               ))}

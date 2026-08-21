@@ -1,4 +1,5 @@
 {
+  "title": "BackFlow AI - Platform Pencocokan Muatan Balik",
   "description": "Platform AI membantu dispatcher dan fleet manager mencocokkan truk kosong dengan order internal searah rute untuk efisiensi logistik optimal.",
   "robots": {
     "index": false
