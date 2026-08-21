@@ -5,7 +5,7 @@ backhaul with shipment demand traveling in the same direction.
 
 ## Project structure
 
-- `frontend/` — Next.js web application
+- `frontend/` — React + Vite web application
 - `backend/` — FastAPI service and AI matching engine
 - `data/` — synthetic datasets used for development and evaluation
 - `docs/` — architecture and product documentation
