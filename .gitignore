@@ -9,6 +9,7 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .venv/
+.venv-ml/
 venv/
 
 # Node / Next.js
@@ -19,6 +20,24 @@ npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
 
+# ML model artifacts and caches (never commit weights or training state).
+# Exception: final exported artifacts ARE committed so `docker compose up` runs
+# clean without downloads (see docs/decisions.md D8).
+*.pkl
+*.onnx
+*.joblib
+*.pt
+*.bin
+.huggingface/
+.cache/huggingface/
+data/processed/
+!backend/app/models/artifacts/*.pkl
+!backend/app/models/artifacts/*.onnx
+!backend/app/models/artifacts/manifest.json
+!backend/app/models/artifacts/embedding_config.json
+!backend/tests/fixtures/**/*.onnx
+!backend/tests/fixtures/**/*.json
+
 # IDE, OS, coverage, and builds
 .idea/
 .vscode/
@@ -28,3 +47,4 @@ Thumbs.db
 htmlcov/
 dist/
 build/
+
