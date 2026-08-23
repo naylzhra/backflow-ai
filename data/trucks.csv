@@ -1,0 +1,41 @@
+truck_id,origin,destination,arrival_date,free_capacity_tons,accepted_cargo_types
+TRK-001,Bandar Lampung,Jakarta,2026-09-12,6.4,[]
+TRK-002,Yogyakarta,Jakarta,2026-09-02,12.8,[]
+TRK-003,Pekanbaru,Medan,2026-09-07,2.5,[]
+TRK-004,Jakarta,Semarang,2026-09-12,12.4,"[""tekstil & garmen"", ""pertanian & pupuk"", ""elektronik""]"
+TRK-005,Pekanbaru,Medan,2026-09-14,2.1,"[""pertanian & pupuk"", ""furnitur""]"
+TRK-006,Bandung,Jakarta,2026-09-04,17.3,"[""pertanian & pupuk"", ""elektronik""]"
+TRK-007,Surabaya,Malang,2026-09-07,3.5,[]
+TRK-008,Malang,Surabaya,2026-09-09,4.0,"[""otomotif""]"
+TRK-009,Semarang,Solo,2026-09-05,15.3,[]
+TRK-010,Palembang,Jakarta,2026-09-02,2.7,"[""bahan bangunan"", ""plastik & kemasan""]"
+TRK-011,Yogyakarta,Jakarta,2026-09-14,3.6,"[""bahan bangunan""]"
+TRK-012,Surabaya,Semarang,2026-09-06,5.4,"[""makanan & minuman"", ""otomotif""]"
+TRK-013,Surabaya,Semarang,2026-09-03,10.5,"[""elektronik"", ""pertanian & pupuk"", ""plastik & kemasan""]"
+TRK-014,Yogyakarta,Jakarta,2026-09-07,6.3,[]
+TRK-015,Bandar Lampung,Jakarta,2026-09-14,14.3,"[""plastik & kemasan""]"
+TRK-016,Surabaya,Jakarta,2026-09-07,6.3,"[""plastik & kemasan""]"
+TRK-017,Jakarta,Yogyakarta,2026-09-08,8.3,"[""plastik & kemasan"", ""elektronik"", ""otomotif""]"
+TRK-018,Bandar Lampung,Jakarta,2026-09-12,11.0,"[""makanan & minuman"", ""elektronik""]"
+TRK-019,Surabaya,Semarang,2026-09-04,18.0,"[""furnitur"", ""makanan & minuman""]"
+TRK-020,Jakarta,Bandung,2026-09-14,3.8,"[""tekstil & garmen""]"
+TRK-021,Bandar Lampung,Jakarta,2026-09-11,8.8,[]
+TRK-022,Jakarta,Semarang,2026-09-09,15.8,"[""otomotif"", ""pertanian & pupuk"", ""makanan & minuman""]"
+TRK-023,Jakarta,Surabaya,2026-09-13,12.3,"[""pertanian & pupuk""]"
+TRK-024,Semarang,Jakarta,2026-09-01,17.3,"[""otomotif""]"
+TRK-025,Surabaya,Semarang,2026-09-14,12.0,"[""elektronik""]"
+TRK-026,Bandar Lampung,Jakarta,2026-09-06,14.2,"[""makanan & minuman""]"
+TRK-027,Pekanbaru,Medan,2026-09-08,2.3,"[""tekstil & garmen"", ""pertanian & pupuk"", ""makanan & minuman""]"
+TRK-028,Malang,Surabaya,2026-09-04,16.0,"[""bahan bangunan"", ""tekstil & garmen""]"
+TRK-029,Jakarta,Semarang,2026-09-08,15.1,[]
+TRK-030,Pekanbaru,Medan,2026-09-09,4.6,"[""otomotif""]"
+TRK-031,Medan,Pekanbaru,2026-09-13,13.7,"[""bahan bangunan"", ""pertanian & pupuk""]"
+TRK-032,Jakarta,Yogyakarta,2026-09-09,9.2,"[""plastik & kemasan"", ""bahan bangunan""]"
+TRK-033,Yogyakarta,Jakarta,2026-09-09,5.7,"[""tekstil & garmen"", ""pertanian & pupuk""]"
+TRK-034,Yogyakarta,Jakarta,2026-09-12,12.1,[]
+TRK-035,Yogyakarta,Jakarta,2026-09-01,15.8,[]
+TRK-036,Jakarta,Semarang,2026-09-09,4.1,"[""otomotif"", ""elektronik""]"
+TRK-037,Jakarta,Palembang,2026-09-13,8.5,"[""otomotif""]"
+TRK-038,Semarang,Jakarta,2026-09-07,7.7,[]
+TRK-039,Solo,Semarang,2026-09-11,3.6,"[""tekstil & garmen"", ""plastik & kemasan"", ""furnitur""]"
+TRK-040,Semarang,Solo,2026-09-04,5.0,"[""bahan bangunan""]"
