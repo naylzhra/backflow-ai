@@ -138,7 +138,8 @@ def main() -> None:
     )
 
     # Export ONNX: encoder + pooling + normalization in one graph.
-    wrapper = _PoolingWrapper(model)
+    # Move to CPU so export works regardless of the training device (CUDA/CPU).
+    wrapper = _PoolingWrapper(model).to("cpu")
     wrapper.eval()
     dummy_ids = torch.ones(1, args.max_seq_len, dtype=torch.long)
     dummy_mask = torch.ones(1, args.max_seq_len, dtype=torch.long)
