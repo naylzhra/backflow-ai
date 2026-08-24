@@ -156,6 +156,7 @@ def main() -> None:
             "sentence_embedding": {0: "batch"},
         },
         opset_version=14,
+        dynamo=False,  # legacy exporter: stable for wrappers, no onnxscript dependency
     )
 
     # Persist tokenizer + config next to the ONNX graph.
