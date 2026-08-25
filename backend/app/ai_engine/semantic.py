@@ -18,8 +18,23 @@ from .cargo_catalog import CATEGORIES
 from .preprocess import categorize_cargo
 
 
+def normalize_category(name: str) -> str:
+    """Map an accepted-cargo-type string to the canonical category key.
+
+    The frontend may send capitalized or paraphrased labels (e.g. "Tekstil").
+    Exact keys pass through; anything else is mapped via the cargo catalog so
+    the embedding phrase always matches the training-time vocabulary.
+    """
+    key = name.strip()
+    if key in CATEGORIES:
+        return key
+    mapped = categorize_cargo(key)
+    return mapped or key
+
+
 def category_phrase(category: str) -> str:
     """Canonical text used to represent a cargo category for embedding."""
+    category = normalize_category(category)
     keywords = CATEGORIES.get(category, [])
     return f"{category} ({', '.join(keywords[:4])})"
 
