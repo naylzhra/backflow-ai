@@ -62,12 +62,25 @@ def build_feature_vector(
     truck: Truck,
     order: Order,
     cities: Mapping[str, Mapping[str, float]],
-    semantic: SemanticScorer,
+    semantic: SemanticScorer | None = None,
+    semantic_score: float | None = None,
 ) -> dict[str, float]:
-    """Return the four features for one truck x order pair."""
+    """Return the four features for one truck x order pair.
+
+    ``semantic_score`` overrides the semantic feature so bulk feature extraction
+    can precompute embeddings once and inject the value (avoids re-encoding per
+    pair); otherwise the scorer is invoked.
+    """
     pl, pn = _coords(cities, order.pickup_city)
     ol, on = _coords(cities, truck.origin)
     dl, dn = _coords(cities, truck.destination)
+    if semantic_score is None:
+        if semantic is None:
+            semantic_score = 0.0
+        else:
+            semantic_score = semantic.score_cargo_vs_types(
+                order.cargo_description, truck.accepted_cargo_types
+            )
     return {
         "route_distance_km": round(
             point_to_segment_km(pl, pn, ol, on, dl, dn), 2
@@ -78,10 +91,5 @@ def build_feature_vector(
         "capacity_ratio": round(
             capacity_ratio(order.weight_tons, truck.free_capacity_tons), 4
         ),
-        "semantic_similarity": round(
-            semantic.score_cargo_vs_types(
-                order.cargo_description, truck.accepted_cargo_types
-            ),
-            4,
-        ),
+        "semantic_similarity": round(float(semantic_score), 4),
     }

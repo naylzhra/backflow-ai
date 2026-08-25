@@ -19,6 +19,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 DATA_DIR = Path(__file__).resolve().parents[1]
@@ -76,6 +77,46 @@ def _build_semantic(trucks: pd.DataFrame, orders: pd.DataFrame) -> SemanticScore
     return SemanticScorer(corpus_texts=orders["cargo_description"].tolist())
 
 
+def _precompute_semantic(
+    trucks: pd.DataFrame,
+    active_orders: pd.DataFrame,
+    semantic: SemanticScorer,
+) -> dict[str, dict[str, float]]:
+    """Embed every description and category phrase once, then precompute
+    per-truck max-cosine scores so the ONNX/TF-IDF encoder runs on a handful of
+    batches instead of once per truck x order pair."""
+    from app.ai_engine.semantic import category_phrase
+
+    descriptions = active_orders["cargo_description"].tolist()
+    all_categories: set[str] = set()
+    for accepted in trucks["accepted_cargo_types"]:
+        for category in json.loads(str(accepted)):
+            all_categories.add(category)
+    sorted_categories = sorted(all_categories)
+
+    desc_vectors = dict(zip(descriptions, semantic.encode(descriptions)))
+    cat_vectors = dict(
+        zip(
+            sorted_categories,
+            semantic.encode([category_phrase(c) for c in sorted_categories]),
+        )
+    )
+
+    precomputed: dict[str, dict[str, float]] = {}
+    for truck_row in trucks.itertuples(index=False):
+        accepted = json.loads(str(truck_row.accepted_cargo_types))
+        truck_id = str(truck_row.truck_id)
+        if not accepted:
+            precomputed[truck_id] = {d: 1.0 for d in descriptions}
+            continue
+        cat_vecs = [cat_vectors[cat] for cat in accepted]
+        precomputed[truck_id] = {
+            d: float(max(np.dot(desc_vectors[d], v) for v in cat_vecs))
+            for d in descriptions
+        }
+    return precomputed
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=DATA_DIR / "features.csv")
@@ -88,14 +129,23 @@ def main() -> None:
 
     semantic = _build_semantic(trucks, orders)
     active_orders = orders[orders["status"] == "active"]
+    precomputed = _precompute_semantic(trucks, active_orders, semantic)
+
+    order_rows = {
+        str(r.order_id): r for r in active_orders.itertuples(index=False)
+    }
+    truck_rows = {str(r.truck_id): r for r in trucks.itertuples(index=False)}
 
     rows = []
     for label_row in labels.itertuples(index=False):
-        truck = _to_truck(trucks[trucks.truck_id == label_row.truck_id].iloc[0])
-        order = _to_order(
-            active_orders[active_orders.order_id == label_row.order_id].iloc[0]
+        truck = _to_truck(truck_rows[str(label_row.truck_id)])
+        order = _to_order(order_rows[str(label_row.order_id)])
+        features = build_feature_vector(
+            truck,
+            order,
+            cities,
+            semantic_score=precomputed[str(label_row.truck_id)][order.cargo_description],
         )
-        features = build_feature_vector(truck, order, cities, semantic)
         rows.append({**features, "match_berhasil": int(label_row.match_berhasil)})
 
     features_df = pd.DataFrame(rows)

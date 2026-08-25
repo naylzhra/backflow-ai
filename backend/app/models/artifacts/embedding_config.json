@@ -1,0 +1,12 @@
+{
+  "base_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "fine_tuned": true,
+  "loss": "CosineSimilarityLoss",
+  "epochs": 3,
+  "learning_rate": 2e-05,
+  "max_seq_len": 128,
+  "negative_pairs_per_positive": 2,
+  "seed": 42,
+  "embedding_dim": 384,
+  "onnx_opset": 14
+}

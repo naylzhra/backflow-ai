@@ -53,19 +53,24 @@ class SemanticScorer:
         self._tfidf = TfidfVectorizer(lowercase=True)
         self._corpus_matrix = self._tfidf.fit_transform(texts)
 
+    def encode(self, texts: list[str]) -> np.ndarray:
+        """L2-normalized embedding matrix ``(n, dim)`` for ``texts``.
+
+        Uses the fine-tuned ONNX embedding when available, otherwise the TF-IDF
+        vectors. Batching here is what keeps training-time feature extraction fast.
+        """
+        if self._embedding is not None:
+            return self._embedding.encode(texts)
+        if self._tfidf is not None:
+            dense = self._tfidf.transform(texts).toarray()
+            norms = np.linalg.norm(dense, axis=1, keepdims=True) + 1e-9
+            return dense / norms
+        return np.zeros((len(texts), 1), dtype=np.float32)
+
     def similarity(self, text_a: str, text_b: str) -> float:
         """Cosine similarity in ``[0, 1]`` between two texts."""
-        if self._embedding is not None:
-            va, vb = self._embedding.encode([text_a, text_b])
-            return float(np.dot(va, vb))
-        if self._tfidf is None:
-            return 0.0
-        import scipy.sparse as sp
-
-        va = self._tfidf.transform([text_a])
-        vb = self._tfidf.transform([text_b])
-        norm = lambda v: v / (sp.linalg.norm(v) + 1e-9)
-        return float((norm(va) @ norm(vb).T).toarray()[0, 0])
+        matrix = self.encode([text_a, text_b])
+        return float(np.dot(matrix[0], matrix[1]))
 
     def score_cargo_vs_types(
         self, cargo_description: str, accepted_cargo_types: list[str]
