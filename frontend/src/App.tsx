@@ -2659,6 +2659,7 @@ export default function App() {
     asal: { kota: '', kecamatan: '', kelurahan: '' }, tujuan: { kota: '', kecamatan: '', kelurahan: '' }, tanggal: '', kapasitas: '', jenisMuatan: [],
   })
   const [toast, setToast] = useState(false)
+  const [isAccepting, setIsAccepting] = useState(false)
 
   // Live data integration states
   const [metrics, setMetrics] = useState({
@@ -2763,8 +2764,9 @@ export default function App() {
   }
 
   const handleAmbil = async () => {
-    if (!searchResult?.recommendation?.order?.id) return;
+    if (!searchResult?.recommendation?.order?.id || isAccepting) return;
     const matchId = searchResult.recommendation.order.id;
+    setIsAccepting(true);
     
     try {
       const response = await fetch(`${apiUrl}/api/v1/matches/${matchId}/accept`, {
@@ -2775,12 +2777,19 @@ export default function App() {
         setTimeout(() => setToast(false), 3500);
         fetchMetrics();
         fetchHistory();
+        
+        // Auto return to dashboard after 1.5s so dispatcher sees the success toast first!
+        setTimeout(() => {
+          setPage('dashboard');
+        }, 1500);
       } else {
         alert("Gagal menyetujui kargo muatan balik");
       }
     } catch (err) {
       console.error("Error accepting match:", err);
       alert("Gagal menghubungi server");
+    } finally {
+      setIsAccepting(false);
     }
   }
 
