@@ -47,4 +47,5 @@ Thumbs.db
 htmlcov/
 dist/
 build/
+scratch/
 
