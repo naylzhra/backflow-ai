@@ -61,13 +61,21 @@ def find_best_match(
     Orders exceeding the truck's free capacity are excluded (never recommended).
     Semantic similarity is computed in one batched pass for all candidates.
     """
-    if not orders:
-        return MatchResult(status="empty", best_order=None, candidate_count=0)
-
+    print("\n" + "=" * 80)
+    print(f"🤖 [AI ENGINE] INITIATING BACKHAUL SEARCH FOR TRUCK: {truck.truck_id or 'TRK-PROD'}")
+    print(f"   Route: {truck.origin} ➔ {truck.destination} | Empty Capacity: {truck.free_capacity_tons} Tons | Arrival Date: {truck.arrival_date}")
+    print(f"   Accepted Cargo Types: {list(truck.accepted_cargo_types)}")
+    print(f"   Total Orders in Database: {len(orders)}")
+    
     candidates = [
         order for order in orders if order.weight_tons <= truck.free_capacity_tons
     ]
+    print(f"   Candidates passing capacity hard-constraint: {len(candidates)} / {len(orders)}")
+    print("-" * 80)
+    
     if not candidates:
+        print("❌ [AI DECISION] NO MATCH: Zero candidates passed the capacity check.")
+        print("=" * 80 + "\n")
         return MatchResult(status="empty", best_order=None, candidate_count=len(orders))
 
     sem_scores = _batch_semantic_scores(
@@ -83,12 +91,28 @@ def find_best_match(
         )
         sub = sub_scores(features)
         score = compose_score(features, sub, scoring_model)
+        
+        # Log evaluation of each candidate in the terminal
+        print(f"📝 [AI EVALUATOR] Order {order.order_id} ({order.pickup_city} ➔ {order.dropoff_city}):")
+        print(f"     Detour Distance  : {features.get('route_distance_km', 0.0):.2f} km")
+        print(f"     Route Fit        : {sub.get('route_fit', 0.0) * 100.0:.1f}%")
+        print(f"     Schedule Fit     : {sub.get('schedule_fit', 0.0) * 100.0:.1f}%")
+        print(f"     Capacity Ratio   : {sub.get('capacity_fit', 0.0) * 100.0:.1f}%")
+        print(f"     Semantic Fit     : {sub.get('semantic_fit', 0.0) * 100.0:.1f}%")
+        print(f"     ➡️ Predicted Match Score: {score:.1f}%")
+        print(f"     --------------------------------------------------")
+        
         if score > best[0]:
             best = (score, order, sub, features)
 
     score, best_order, sub, features = best
-    explanation = explain(score, sub, scoring_model.manifest.get("model") if scoring_model else None)
+    model_lbl = scoring_model.manifest.get("model") if scoring_model else "XGBoost (Fallback Weights)"
+    explanation = explain(score, sub, model_lbl)
+    
     if score < threshold:
+        print(f"⚠️ [AI DECISION] REJECTED: Best score ({score:.1f}%) is below minimum threshold ({threshold}%).")
+        print(f"   Reason: {explanation}")
+        print("=" * 80 + "\n")
         return MatchResult(
             status="low",
             best_order=None,
@@ -97,6 +121,11 @@ def find_best_match(
             candidate_count=len(candidates),
             explanation="Belum ada kecocokan yang layak untuk rute ini.",
         )
+        
+    print(f"🏆 [AI DECISION] BEST MATCH FOUND: {best_order.order_id} ({best_order.pickup_city} ➔ {best_order.dropoff_city})")
+    print(f"   Model used: {model_lbl} | Score: {score:.1f}%")
+    print(f"   Reason: {explanation}")
+    print("=" * 80 + "\n")
     return MatchResult(
         status="ok",
         best_order=best_order,

@@ -1668,7 +1668,7 @@ function DetailDrawer({ row, onClose }: { row: RiwayatRow; onClose: () => void }
     return () => document.removeEventListener('keydown', handler)
   }, [onClose])
 
-  const hasMatch = row.score !== null && row.orderId !== null
+  const hasMatch = row.score !== null && row.orderId !== null && row.orderId !== '-'
 
   return (
     <>
@@ -1844,7 +1844,7 @@ function DetailDrawer({ row, onClose }: { row: RiwayatRow; onClose: () => void }
           )}
 
           {/* Savings highlight */}
-          {row.hemat && (
+          {row.hemat && row.hemat !== '-' && (
             <div
               className="flex items-center justify-between p-4 rounded-xl"
               style={{ background: '#EEF9F7', border: '1px solid #99E6DC' }}
@@ -2212,9 +2212,19 @@ function TrendChart({ trendData }: { trendData: { label: string; value: number }
   const W = 760, H = 200, PAD = { top: 16, right: 24, bottom: 36, left: 64 }
   const chartW = W - PAD.left - PAD.right
   const chartH = H - PAD.top - PAD.bottom
+
+  if (!trendData || trendData.length === 0) {
+    return (
+      <div className="h-[200px] flex items-center justify-center border border-dashed rounded-xl" style={{ borderColor: '#DDE3EA', background: '#FAFBFC' }}>
+        <p className="text-sm" style={{ color: '#94A3B8', fontFamily: 'Inter, sans-serif' }}>Belum ada data penghematan kumulatif</p>
+      </div>
+    )
+  }
+
   const maxVal = Math.max(...trendData.map(d => d.value), 1)
   const pts = trendData.map((d, i) => ({
     x: PAD.left + (i / Math.max(trendData.length - 1, 1)) * chartW,
+
     y: PAD.top + chartH - (d.value / maxVal) * chartH,
     ...d,
   }))
@@ -2335,18 +2345,20 @@ function ScreenLaporan({
   const trendData = getTrendData();
 
   // Dynamic calculations for Efisiensi & Rata-rata
-  const totalPencarianVal = historyData.length > 0 ? historyData.length : 42;
-  const matchBerhasilVal = acceptedMatches.length > 0 ? acceptedMatches.length : 28;
-  const trukTerisiVal = acceptedMatches.length > 0 ? (acceptedMatches.length - 4 > 0 ? acceptedMatches.length - 4 : acceptedMatches.length) : 24;
-  const totalSavingsFormatted = metrics.total_estimated_savings > 8450000 
+  const hasRealData = historyData.length > 0;
+  const totalPencarianVal = hasRealData ? historyData.length : 42;
+  const matchBerhasilVal = hasRealData ? acceptedMatches.length : 28;
+  const trukTerisiVal = hasRealData ? acceptedMatches.length : 24;
+  const totalSavingsFormatted = hasRealData 
     ? formatRupiah(metrics.total_estimated_savings) 
     : 'Rp 32.450.000';
 
   const totalMatchesCount = historyData.filter(r => r.status === 'Diambil' || r.status === 'Tidak dipilih').length;
   const ratio = totalMatchesCount > 0 ? Math.round((acceptedMatches.length / totalMatchesCount) * 100) : 86;
-  const averageSavings = acceptedMatches.length > 0 && metrics.total_estimated_savings > 8450000
-    ? Math.round(metrics.total_estimated_savings / acceptedMatches.length) 
+  const averageSavings = hasRealData
+    ? (acceptedMatches.length > 0 ? Math.round(metrics.total_estimated_savings / acceptedMatches.length) : 0)
     : 1158929;
+
 
   return (
     <div className="w-full max-w-screen-lg mx-auto">
@@ -2781,6 +2793,7 @@ export default function App() {
         // Auto return to dashboard after 1.5s so dispatcher sees the success toast first!
         setTimeout(() => {
           setPage('dashboard');
+          setScreen('input');
         }, 1500);
       } else {
         alert("Gagal menyetujui kargo muatan balik");
@@ -2833,7 +2846,14 @@ export default function App() {
               return (
                 <button
                   key={item.label}
-                  onClick={() => item.page && setPage(item.page)}
+                  onClick={() => {
+                    if (item.page) {
+                      setPage(item.page);
+                      if (item.page === 'cari-muatan') {
+                        setScreen('input');
+                      }
+                    }
+                  }}
                   className="px-4 py-1.5 rounded-lg text-sm font-medium transition-all"
                   style={{
                     fontFamily: 'Plus Jakarta Sans, sans-serif',
