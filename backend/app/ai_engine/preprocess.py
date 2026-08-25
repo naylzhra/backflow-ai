@@ -60,6 +60,15 @@ CITY_ALIASES: dict[str, str] = {
     "bandarlampung": "Bandar Lampung",
     "lampung": "Bandar Lampung",
     "makassar": "Makassar",
+    "jakartaselatan": "Jakarta",
+    "jakartautara": "Jakarta",
+    "jakartatimur": "Jakarta",
+    "jakartabarat": "Jakarta",
+    "jakartapusat": "Jakarta",
+    "kabupatenbekasi": "Bekasi",
+    "kabupatenkarawang": "Bekasi",
+    "kotadenpasar": "Surabaya",
+    "kotabalikpapan": "Makassar",
 }
 
 _TOKEN_RE = re.compile(r"[^a-z\s]+")

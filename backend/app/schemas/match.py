@@ -58,6 +58,8 @@ class MatchRecommendation(BaseModel):
     route: RouteSummary
     estimated_savings: float = Field(ge=0)
     score_breakdown: ScoreBreakdown
+    explanation: str = ""
+
 
 
 class MatchSearchResponse(BaseModel):

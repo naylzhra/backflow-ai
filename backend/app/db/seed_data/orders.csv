@@ -1,0 +1,201 @@
+order_id,pickup_city,dropoff_city,pickup_start,pickup_end,weight_tons,cargo_description,cargo_category,status
+ORD-0001,Cirebon,Jakarta,2026-09-09,2026-09-13,9.8,4 sak semen untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0002,Solo,Semarang,2026-09-01,2026-09-02,3.0,58 kotak keramik lantai untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0003,Surabaya,Yogyakarta,2026-09-16,2026-09-18,3.3,10 kabel listrik rol untuk pengiriman elektronik,elektronik,active
+ORD-0004,Yogyakarta,Depok,2026-09-12,2026-09-15,0.8,38 gulungan kain katun untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0005,Bandar Lampung,Jakarta,2026-09-17,2026-09-19,2.6,44 gulungan kain katun untuk pengiriman tekstil & garmen,tekstil & garmen,closed
+ORD-0006,Bandung,Semarang,2026-09-19,2026-09-21,7.2,60 bal benang untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0007,Bogor,Bandung,2026-09-14,2026-09-15,5.2,60 ikatan besi beton untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0008,Jakarta,Solo,2026-09-15,2026-09-16,2.0,57 mesin cuci portable untuk pengiriman elektronik,elektronik,active
+ORD-0009,Depok,Surabaya,2026-09-08,2026-09-10,4.5,43 bal kemasan plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0010,Depok,Jakarta,2026-09-04,2026-09-06,6.9,19 krat hasil pertanian untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0011,Surabaya,Bandar Lampung,2026-09-07,2026-09-10,1.1,54 kotak aki kering untuk pengiriman otomotif,otomotif,active
+ORD-0012,Bandar Lampung,Bekasi,2026-09-13,2026-09-16,5.3,36 dus karton kosong untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0013,Solo,Pekanbaru,2026-09-04,2026-09-05,7.2,28 galon minuman kemasan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0014,Cirebon,Bogor,2026-09-20,2026-09-21,3.0,43 karton pakaian jadi untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0015,Yogyakarta,Tangerang,2026-09-14,2026-09-15,3.3,52 set televisi LCD untuk pengiriman elektronik,elektronik,active
+ORD-0016,Palembang,Bandung,2026-09-01,2026-09-03,8.2,18 karton botol plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0017,Surabaya,Pekanbaru,2026-09-13,2026-09-15,1.1,23 rak besi siap rakit untuk pengiriman furnitur,furnitur,active
+ORD-0018,Jakarta,Bandung,2026-09-19,2026-09-20,5.1,50 bal kemasan plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0019,Solo,Makassar,2026-09-11,2026-09-12,1.0,38 sak gabah panen untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0020,Tangerang,Bandung,2026-09-04,2026-09-08,7.5,25 bal kemasan plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0021,Bogor,Medan,2026-09-02,2026-09-06,8.4,24 karton pakaian jadi untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0022,Bandar Lampung,Depok,2026-09-11,2026-09-14,4.1,21 kabel listrik rol untuk pengiriman elektronik,elektronik,active
+ORD-0023,Depok,Cirebon,2026-09-05,2026-09-07,9.1,40 lemari kayu jadi untuk pengiriman furnitur,furnitur,active
+ORD-0024,Cirebon,Medan,2026-09-01,2026-09-04,7.5,30 krat hasil pertanian untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0025,Surabaya,Tangerang,2026-09-17,2026-09-21,8.1,6 karung beras kemasan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0026,Malang,Jakarta,2026-09-10,2026-09-12,11.8,30 sak semen untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0027,Yogyakarta,Bekasi,2026-09-07,2026-09-11,8.4,50 karton suku cadang mobil untuk pengiriman otomotif,otomotif,active
+ORD-0028,Bogor,Bandar Lampung,2026-09-17,2026-09-21,1.9,52 karton pakaian jadi untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0029,Semarang,Malang,2026-09-18,2026-09-21,6.3,58 kotak aki kering untuk pengiriman otomotif,otomotif,active
+ORD-0030,Pekanbaru,Tangerang,2026-09-19,2026-09-20,9.9,41 karung pakan ternak untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0031,Depok,Palembang,2026-09-09,2026-09-11,4.6,9 karton komponen elektronik untuk pengiriman elektronik,elektronik,active
+ORD-0032,Solo,Semarang,2026-09-14,2026-09-16,4.5,4 kabel listrik rol untuk pengiriman elektronik,elektronik,active
+ORD-0033,Medan,Jakarta,2026-09-14,2026-09-17,1.1,20 krat hasil pertanian untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0034,Pekanbaru,Cirebon,2026-09-14,2026-09-16,0.8,43 drum oli mesin untuk pengiriman otomotif,otomotif,active
+ORD-0035,Cirebon,Solo,2026-09-06,2026-09-10,10.9,6 karton mie instan untuk pengiriman makanan & minuman,makanan & minuman,closed
+ORD-0036,Bekasi,Bandung,2026-09-15,2026-09-17,5.7,49 bal benang untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0037,Depok,Malang,2026-09-14,2026-09-17,1.1,15 mesin cuci portable untuk pengiriman elektronik,elektronik,active
+ORD-0038,Medan,Bogor,2026-09-21,2026-09-22,0.7,16 karton pakaian jadi untuk pengiriman tekstil & garmen,tekstil & garmen,closed
+ORD-0039,Malang,Bekasi,2026-09-14,2026-09-16,2.7,50 karton suku cadang mobil untuk pengiriman otomotif,otomotif,active
+ORD-0040,Makassar,Pekanbaru,2026-09-04,2026-09-05,4.8,5 sak gabah panen untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0041,Pekanbaru,Yogyakarta,2026-09-08,2026-09-09,1.9,23 karung pupuk urea untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0042,Surabaya,Pekanbaru,2026-09-03,2026-09-06,1.7,41 bal benang untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0043,Semarang,Makassar,2026-09-05,2026-09-09,3.6,30 kotak snack ringan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0044,Malang,Jakarta,2026-09-09,2026-09-12,10.6,49 tumpukan bata ringan untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0045,Yogyakarta,Depok,2026-09-13,2026-09-16,6.1,52 bal benang untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0046,Depok,Jakarta,2026-09-12,2026-09-15,8.9,32 kabel listrik rol untuk pengiriman elektronik,elektronik,active
+ORD-0047,Tangerang,Jakarta,2026-09-16,2026-09-20,3.0,20 set ban baru untuk pengiriman otomotif,otomotif,active
+ORD-0048,Bandung,Yogyakarta,2026-09-18,2026-09-21,4.5,18 rak besi siap rakit untuk pengiriman furnitur,furnitur,closed
+ORD-0049,Bandung,Yogyakarta,2026-09-15,2026-09-17,1.9,13 karton botol plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0050,Pekanbaru,Bandung,2026-09-13,2026-09-14,3.8,1 krat hasil pertanian untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0051,Bekasi,Bogor,2026-09-02,2026-09-03,10.5,7 karung pakan ternak untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0052,Solo,Makassar,2026-09-16,2026-09-20,3.4,8 kotak aki kering untuk pengiriman otomotif,otomotif,active
+ORD-0053,Bandung,Yogyakarta,2026-09-03,2026-09-04,4.0,8 galon minuman kemasan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0054,Cirebon,Semarang,2026-09-20,2026-09-22,10.4,20 rak besi siap rakit untuk pengiriman furnitur,furnitur,active
+ORD-0055,Jakarta,Bogor,2026-09-04,2026-09-06,3.3,11 sak semen untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0056,Depok,Tangerang,2026-09-08,2026-09-09,4.1,5 kotak aki kering untuk pengiriman otomotif,otomotif,active
+ORD-0057,Bandar Lampung,Tangerang,2026-09-21,2026-09-23,2.2,53 kasur spring bed untuk pengiriman furnitur,furnitur,active
+ORD-0058,Depok,Bandar Lampung,2026-09-16,2026-09-19,8.8,8 seragam kerja siap kirim untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0059,Depok,Yogyakarta,2026-09-13,2026-09-16,10.7,39 drum oli mesin untuk pengiriman otomotif,otomotif,active
+ORD-0060,Bandung,Jakarta,2026-09-10,2026-09-13,8.8,37 krat hasil pertanian untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0061,Malang,Bogor,2026-09-11,2026-09-13,4.2,41 kotak aki kering untuk pengiriman otomotif,otomotif,active
+ORD-0062,Makassar,Surabaya,2026-09-16,2026-09-19,10.4,27 kasur spring bed untuk pengiriman furnitur,furnitur,active
+ORD-0063,Depok,Tangerang,2026-09-13,2026-09-14,1.8,56 kotak aki kering untuk pengiriman otomotif,otomotif,active
+ORD-0064,Makassar,Semarang,2026-09-18,2026-09-22,7.7,41 rak besi siap rakit untuk pengiriman furnitur,furnitur,active
+ORD-0065,Jakarta,Malang,2026-09-09,2026-09-11,1.9,46 sak gabah panen untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0066,Solo,Pekanbaru,2026-09-12,2026-09-13,1.2,30 karton suku cadang mobil untuk pengiriman otomotif,otomotif,active
+ORD-0067,Surabaya,Tangerang,2026-09-05,2026-09-09,10.1,16 karung pakan ternak untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0068,Bekasi,Medan,2026-09-07,2026-09-09,5.3,53 mesin cuci portable untuk pengiriman elektronik,elektronik,active
+ORD-0069,Cirebon,Bandung,2026-09-15,2026-09-17,2.0,30 seragam kerja siap kirim untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0070,Pekanbaru,Bandung,2026-09-08,2026-09-12,4.2,46 kotak keramik lantai untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0071,Bandung,Bekasi,2026-09-21,2026-09-23,11.6,56 drum oli mesin untuk pengiriman otomotif,otomotif,closed
+ORD-0072,Solo,Bandung,2026-09-11,2026-09-12,9.4,5 set televisi LCD untuk pengiriman elektronik,elektronik,active
+ORD-0073,Makassar,Medan,2026-09-11,2026-09-15,10.4,21 kabel listrik rol untuk pengiriman elektronik,elektronik,active
+ORD-0074,Palembang,Surabaya,2026-09-16,2026-09-17,3.8,48 set televisi LCD untuk pengiriman elektronik,elektronik,active
+ORD-0075,Malang,Jakarta,2026-09-08,2026-09-11,1.2,51 mesin cuci portable untuk pengiriman elektronik,elektronik,active
+ORD-0076,Cirebon,Yogyakarta,2026-09-14,2026-09-15,5.8,11 sak gabah panen untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0077,Yogyakarta,Solo,2026-09-09,2026-09-10,2.4,30 tumpukan bata ringan untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0078,Semarang,Bekasi,2026-09-01,2026-09-05,5.6,38 krat hasil pertanian untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0079,Malang,Bandung,2026-09-10,2026-09-12,3.1,7 seragam kerja siap kirim untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0080,Depok,Pekanbaru,2026-09-18,2026-09-20,0.6,18 kotak aki kering untuk pengiriman otomotif,otomotif,active
+ORD-0081,Semarang,Bogor,2026-09-18,2026-09-20,8.3,15 mesin cuci portable untuk pengiriman elektronik,elektronik,active
+ORD-0082,Yogyakarta,Cirebon,2026-09-05,2026-09-06,7.2,6 karton pakaian jadi untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0083,Bandung,Yogyakarta,2026-09-14,2026-09-16,11.7,54 ikatan besi beton untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0084,Pekanbaru,Jakarta,2026-09-19,2026-09-20,5.7,56 sak gabah panen untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0085,Surabaya,Jakarta,2026-09-13,2026-09-16,6.7,24 kabel listrik rol untuk pengiriman elektronik,elektronik,active
+ORD-0086,Surabaya,Tangerang,2026-09-19,2026-09-23,0.8,59 gulungan stretch film untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0087,Surabaya,Bekasi,2026-09-21,2026-09-25,1.0,20 karung pupuk urea untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0088,Bekasi,Surabaya,2026-09-08,2026-09-10,9.0,38 rak besi siap rakit untuk pengiriman furnitur,furnitur,active
+ORD-0089,Bekasi,Bandar Lampung,2026-09-14,2026-09-15,3.7,14 drum oli mesin untuk pengiriman otomotif,otomotif,active
+ORD-0090,Bandar Lampung,Makassar,2026-09-12,2026-09-13,4.6,18 dus karton kosong untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0091,Surabaya,Solo,2026-09-14,2026-09-15,2.4,4 karton suku cadang mobil untuk pengiriman otomotif,otomotif,active
+ORD-0092,Tangerang,Yogyakarta,2026-09-05,2026-09-07,7.2,22 set televisi LCD untuk pengiriman elektronik,elektronik,active
+ORD-0093,Medan,Bekasi,2026-09-20,2026-09-21,2.0,52 krat hasil pertanian untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0094,Jakarta,Bekasi,2026-09-04,2026-09-05,6.6,4 karung beras kemasan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0095,Medan,Malang,2026-09-13,2026-09-14,1.2,29 karton mie instan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0096,Bandar Lampung,Jakarta,2026-09-02,2026-09-05,12.0,28 kotak aki kering untuk pengiriman otomotif,otomotif,active
+ORD-0097,Semarang,Bekasi,2026-09-15,2026-09-16,2.0,25 mesin cuci portable untuk pengiriman elektronik,elektronik,active
+ORD-0098,Semarang,Jakarta,2026-09-15,2026-09-19,8.0,28 set televisi LCD untuk pengiriman elektronik,elektronik,active
+ORD-0099,Tangerang,Jakarta,2026-09-11,2026-09-15,5.4,24 kasur spring bed untuk pengiriman furnitur,furnitur,active
+ORD-0100,Surabaya,Jakarta,2026-09-16,2026-09-17,1.6,52 mesin cuci portable untuk pengiriman elektronik,elektronik,active
+ORD-0101,Solo,Bandung,2026-09-16,2026-09-18,7.2,56 kabel listrik rol untuk pengiriman elektronik,elektronik,active
+ORD-0102,Jakarta,Solo,2026-09-10,2026-09-13,2.3,15 dus karton kosong untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0103,Bandung,Yogyakarta,2026-09-18,2026-09-21,9.8,39 karton komponen elektronik untuk pengiriman elektronik,elektronik,active
+ORD-0104,Medan,Surabaya,2026-09-09,2026-09-10,11.1,1 karung beras kemasan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0105,Bekasi,Jakarta,2026-09-03,2026-09-06,1.6,25 karton botol plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0106,Bandung,Yogyakarta,2026-09-12,2026-09-15,1.5,10 bal kemasan plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0107,Yogyakarta,Bandung,2026-09-04,2026-09-06,2.2,27 kotak keramik lantai untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0108,Bandung,Surabaya,2026-09-12,2026-09-13,1.7,34 seragam kerja siap kirim untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0109,Jakarta,Bandar Lampung,2026-09-13,2026-09-14,9.3,19 bal benang untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0110,Bandung,Solo,2026-09-15,2026-09-16,1.1,33 set ban baru untuk pengiriman otomotif,otomotif,active
+ORD-0111,Surabaya,Jakarta,2026-09-12,2026-09-13,0.7,56 set meja dan kursi untuk pengiriman furnitur,furnitur,active
+ORD-0112,Malang,Makassar,2026-09-06,2026-09-07,5.8,52 karton pakaian jadi untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0113,Semarang,Tangerang,2026-09-12,2026-09-13,7.3,26 set meja dan kursi untuk pengiriman furnitur,furnitur,active
+ORD-0114,Malang,Yogyakarta,2026-09-08,2026-09-11,6.6,58 galon minuman kemasan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0115,Bandung,Tangerang,2026-09-21,2026-09-23,2.5,49 tumpukan bata ringan untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0116,Jakarta,Medan,2026-09-21,2026-09-25,5.7,56 drum oli mesin untuk pengiriman otomotif,otomotif,active
+ORD-0117,Depok,Bandung,2026-09-15,2026-09-16,3.7,23 karton suku cadang mobil untuk pengiriman otomotif,otomotif,active
+ORD-0118,Depok,Tangerang,2026-09-15,2026-09-16,7.9,40 gulungan kain katun untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0119,Bandung,Yogyakarta,2026-09-19,2026-09-20,2.7,33 kotak aki kering untuk pengiriman otomotif,otomotif,closed
+ORD-0120,Bekasi,Jakarta,2026-09-18,2026-09-20,10.4,3 sak gabah panen untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0121,Solo,Bandung,2026-09-12,2026-09-15,2.5,25 drum oli mesin untuk pengiriman otomotif,otomotif,active
+ORD-0122,Bandung,Jakarta,2026-09-20,2026-09-21,8.3,17 gulungan stretch film untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0123,Surabaya,Yogyakarta,2026-09-20,2026-09-22,11.0,42 gulungan stretch film untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0124,Bandung,Surabaya,2026-09-20,2026-09-21,4.3,43 sak gabah panen untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0125,Bandar Lampung,Jakarta,2026-09-17,2026-09-18,4.1,22 lemari kayu jadi untuk pengiriman furnitur,furnitur,active
+ORD-0126,Semarang,Pekanbaru,2026-09-08,2026-09-10,1.7,43 karton mie instan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0127,Yogyakarta,Pekanbaru,2026-09-07,2026-09-08,1.1,47 tumpukan bata ringan untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0128,Cirebon,Medan,2026-09-08,2026-09-12,3.2,20 sak gabah panen untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0129,Medan,Tangerang,2026-09-07,2026-09-10,4.9,11 kotak aki kering untuk pengiriman otomotif,otomotif,active
+ORD-0130,Medan,Palembang,2026-09-05,2026-09-08,6.9,46 gulungan kain katun untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0131,Pekanbaru,Palembang,2026-09-10,2026-09-11,2.2,6 kotak snack ringan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0132,Tangerang,Cirebon,2026-09-15,2026-09-18,4.8,6 seragam kerja siap kirim untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0133,Jakarta,Bandung,2026-09-04,2026-09-07,10.0,49 galon minuman kemasan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0134,Semarang,Pekanbaru,2026-09-01,2026-09-02,6.8,8 seragam kerja siap kirim untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0135,Tangerang,Medan,2026-09-04,2026-09-05,5.8,54 sak semen untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0136,Yogyakarta,Jakarta,2026-09-01,2026-09-03,4.6,12 kotak snack ringan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0137,Jakarta,Semarang,2026-09-12,2026-09-13,7.8,17 bal benang untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0138,Bandung,Surabaya,2026-09-03,2026-09-06,9.4,9 ikatan besi beton untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0139,Bogor,Surabaya,2026-09-07,2026-09-10,6.5,52 karton botol plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0140,Pekanbaru,Palembang,2026-09-10,2026-09-11,3.2,60 drum oli mesin untuk pengiriman otomotif,otomotif,active
+ORD-0141,Bogor,Bandung,2026-09-06,2026-09-09,2.7,56 karton mie instan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0142,Tangerang,Palembang,2026-09-12,2026-09-16,4.9,32 lemari kayu jadi untuk pengiriman furnitur,furnitur,active
+ORD-0143,Bandung,Jakarta,2026-09-17,2026-09-20,7.4,35 set televisi LCD untuk pengiriman elektronik,elektronik,active
+ORD-0144,Malang,Yogyakarta,2026-09-12,2026-09-14,1.3,11 kabel listrik rol untuk pengiriman elektronik,elektronik,active
+ORD-0145,Bandung,Makassar,2026-09-02,2026-09-05,11.4,43 set meja dan kursi untuk pengiriman furnitur,furnitur,active
+ORD-0146,Bandung,Surabaya,2026-09-06,2026-09-07,5.5,5 galon minuman kemasan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0147,Cirebon,Surabaya,2026-09-05,2026-09-06,9.1,24 drum oli mesin untuk pengiriman otomotif,otomotif,active
+ORD-0148,Jakarta,Bandung,2026-09-05,2026-09-08,11.5,48 set meja dan kursi untuk pengiriman furnitur,furnitur,active
+ORD-0149,Solo,Surabaya,2026-09-12,2026-09-14,8.1,40 lemari kayu jadi untuk pengiriman furnitur,furnitur,active
+ORD-0150,Bekasi,Palembang,2026-09-10,2026-09-11,3.8,6 dus karton kosong untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0151,Makassar,Depok,2026-09-11,2026-09-14,3.9,46 set televisi LCD untuk pengiriman elektronik,elektronik,active
+ORD-0152,Surabaya,Bogor,2026-09-06,2026-09-09,2.1,2 kotak keramik lantai untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0153,Solo,Bandung,2026-09-15,2026-09-17,8.7,34 kabel listrik rol untuk pengiriman elektronik,elektronik,active
+ORD-0154,Cirebon,Surabaya,2026-09-19,2026-09-20,5.7,9 karung beras kemasan untuk pengiriman makanan & minuman,makanan & minuman,closed
+ORD-0155,Medan,Bandar Lampung,2026-09-21,2026-09-23,1.1,34 karton mie instan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0156,Bandung,Bandar Lampung,2026-09-19,2026-09-20,1.4,55 ikatan besi beton untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0157,Malang,Yogyakarta,2026-09-05,2026-09-06,5.8,33 bal kemasan plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0158,Yogyakarta,Malang,2026-09-19,2026-09-21,7.5,53 karton mie instan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0159,Jakarta,Semarang,2026-09-21,2026-09-24,7.8,57 kotak keramik lantai untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0160,Depok,Surabaya,2026-09-10,2026-09-14,3.9,45 sak semen untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0161,Semarang,Bekasi,2026-09-11,2026-09-12,4.7,47 kasur spring bed untuk pengiriman furnitur,furnitur,active
+ORD-0162,Bandung,Jakarta,2026-09-13,2026-09-15,3.3,18 bal kemasan plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0163,Bekasi,Semarang,2026-09-02,2026-09-05,11.6,53 lemari kayu jadi untuk pengiriman furnitur,furnitur,active
+ORD-0164,Tangerang,Solo,2026-09-19,2026-09-20,3.9,57 kotak aki kering untuk pengiriman otomotif,otomotif,active
+ORD-0165,Cirebon,Bogor,2026-09-06,2026-09-08,10.5,4 mesin cuci portable untuk pengiriman elektronik,elektronik,active
+ORD-0166,Depok,Semarang,2026-09-13,2026-09-14,6.7,47 ikatan besi beton untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0167,Bandung,Bogor,2026-09-02,2026-09-06,6.9,25 gulungan kain katun untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0168,Malang,Bandung,2026-09-09,2026-09-10,9.6,36 karung beras kemasan untuk pengiriman makanan & minuman,makanan & minuman,closed
+ORD-0169,Malang,Bekasi,2026-09-07,2026-09-11,4.3,34 seragam kerja siap kirim untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0170,Yogyakarta,Depok,2026-09-17,2026-09-19,5.0,38 gulungan stretch film untuk pengiriman plastik & kemasan,plastik & kemasan,closed
+ORD-0171,Yogyakarta,Bandung,2026-09-11,2026-09-13,4.0,27 karung pupuk urea untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0172,Medan,Yogyakarta,2026-09-21,2026-09-22,11.7,47 set ban baru untuk pengiriman otomotif,otomotif,active
+ORD-0173,Pekanbaru,Solo,2026-09-14,2026-09-17,3.2,13 sak semen untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0174,Bekasi,Solo,2026-09-14,2026-09-17,1.9,56 rak besi siap rakit untuk pengiriman furnitur,furnitur,active
+ORD-0175,Malang,Semarang,2026-09-05,2026-09-07,4.8,30 karton botol plastik untuk pengiriman plastik & kemasan,plastik & kemasan,closed
+ORD-0176,Bandung,Tangerang,2026-09-12,2026-09-15,6.9,20 set ban baru untuk pengiriman otomotif,otomotif,active
+ORD-0177,Surabaya,Bandar Lampung,2026-09-16,2026-09-19,9.6,19 drum oli mesin untuk pengiriman otomotif,otomotif,active
+ORD-0178,Cirebon,Medan,2026-09-07,2026-09-09,12.8,3 kasur spring bed untuk pengiriman furnitur,furnitur,active
+ORD-0179,Tangerang,Bogor,2026-09-09,2026-09-11,11.1,60 mesin cuci portable untuk pengiriman elektronik,elektronik,active
+ORD-0180,Tangerang,Palembang,2026-09-04,2026-09-06,3.1,4 tumpukan bata ringan untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0181,Semarang,Jakarta,2026-09-09,2026-09-12,10.5,27 galon minuman kemasan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0182,Palembang,Tangerang,2026-09-16,2026-09-20,3.8,59 sak semen untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0183,Surabaya,Pekanbaru,2026-09-08,2026-09-09,11.2,54 karton mie instan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0184,Semarang,Yogyakarta,2026-09-10,2026-09-11,11.2,19 bal benang untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0185,Surabaya,Cirebon,2026-09-17,2026-09-21,2.7,22 karton mie instan untuk pengiriman makanan & minuman,makanan & minuman,active
+ORD-0186,Medan,Tangerang,2026-09-09,2026-09-12,1.6,12 set ban baru untuk pengiriman otomotif,otomotif,active
+ORD-0187,Surabaya,Yogyakarta,2026-09-13,2026-09-17,2.6,31 karton botol plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0188,Depok,Tangerang,2026-09-10,2026-09-11,2.7,20 gulungan stretch film untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0189,Solo,Bekasi,2026-09-09,2026-09-12,4.0,44 kotak keramik lantai untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0190,Palembang,Bogor,2026-09-10,2026-09-11,11.5,10 karung pakan ternak untuk pengiriman pertanian & pupuk,pertanian & pupuk,active
+ORD-0191,Makassar,Medan,2026-09-12,2026-09-16,10.0,44 set ban baru untuk pengiriman otomotif,otomotif,active
+ORD-0192,Palembang,Solo,2026-09-03,2026-09-07,1.2,37 karton botol plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0193,Bekasi,Malang,2026-09-17,2026-09-21,6.1,52 kabel listrik rol untuk pengiriman elektronik,elektronik,active
+ORD-0194,Solo,Surabaya,2026-09-09,2026-09-10,7.5,47 kasur spring bed untuk pengiriman furnitur,furnitur,active
+ORD-0195,Tangerang,Bandung,2026-09-12,2026-09-13,0.8,35 bal kemasan plastik untuk pengiriman plastik & kemasan,plastik & kemasan,active
+ORD-0196,Bandar Lampung,Bogor,2026-09-03,2026-09-07,2.1,24 seragam kerja siap kirim untuk pengiriman tekstil & garmen,tekstil & garmen,active
+ORD-0197,Bandung,Surabaya,2026-09-13,2026-09-17,6.7,8 mesin cuci portable untuk pengiriman elektronik,elektronik,active
+ORD-0198,Solo,Pekanbaru,2026-09-02,2026-09-05,13.2,20 set meja dan kursi untuk pengiriman furnitur,furnitur,active
+ORD-0199,Surabaya,Depok,2026-09-14,2026-09-18,3.7,3 sak semen untuk pengiriman bahan bangunan,bahan bangunan,active
+ORD-0200,Cirebon,Yogyakarta,2026-09-01,2026-09-03,5.6,16 sak semen untuk pengiriman bahan bangunan,bahan bangunan,active

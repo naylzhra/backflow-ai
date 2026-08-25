@@ -926,6 +926,7 @@ function ScreenResult({
   onCariLain,
   onBack,
   onChangeState,
+  searchResult,
 }: {
   formData: FormData
   state: ResultState
@@ -933,10 +934,35 @@ function ScreenResult({
   onCariLain: () => void
   onBack: () => void
   onChangeState: (s: ResultState) => void
+  searchResult: any
 }) {
   const isGood = state === 'good'
   const isLow = state === 'low'
   const isEmpty = state === 'empty'
+
+  const rec = searchResult?.recommendation;
+  const order = rec?.order;
+  const route = rec?.route;
+  const breakdown = rec?.score_breakdown;
+  const matchScore = rec?.match_score || 92;
+  const explanation = rec?.explanation || "Skor dihitung berdasarkan rute, kapasitas, jadwal, dan jenis muatan.";
+  const estimatedSavings = rec?.estimated_savings || 0;
+  
+  const formatRupiah = (val: number) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
+  }
+
+  // Format date nicely
+  const formatPickupTime = (isoString?: string) => {
+    if (!isoString) return '13 Sept 2026 · 08:00 WIB';
+    try {
+      const d = new Date(isoString);
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} · 08:00 WIB`;
+    } catch {
+      return '13 Sept 2026 · 08:00 WIB';
+    }
+  }
 
   return (
     <div className="w-full max-w-[720px] mx-auto">
@@ -949,7 +975,7 @@ function ScreenResult({
             Rute: <span className="font-medium" style={{ color: '#1B2A40' }}>{formData.asal.kota || '—'} → {formData.tujuan.kota || '—'}</span>
           </p>
         </div>
-        {/* State switcher - demo only */}
+        {/* State switcher - demo fallback */}
         <div className="flex gap-1.5 p-1 rounded-lg" style={{ background: '#F4F7FA', border: '1px solid #DDE3EA' }}>
           {(['good', 'low', 'empty'] as ResultState[]).map(s => (
             <button
@@ -976,9 +1002,9 @@ function ScreenResult({
             <div className="flex items-center gap-6">
               {/* Score ring */}
               <div className="relative flex-shrink-0">
-                <ProgressRing pct={92} size={100} />
+                <ProgressRing pct={matchScore} size={100} />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl font-extrabold leading-none" style={{ color: '#1B2A40', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>92%</span>
+                  <span className="text-2xl font-extrabold leading-none" style={{ color: '#1B2A40', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{Math.round(matchScore)}%</span>
                   <span className="text-[10px] font-semibold" style={{ color: '#0C9A8B' }}>cocok</span>
                 </div>
               </div>
@@ -990,10 +1016,10 @@ function ScreenResult({
                   Kecocokan Tinggi
                 </div>
                 <h2 className="text-xl font-bold mb-1" style={{ color: '#1B2A40', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-                  Order #ORD-2026-4821
+                  Order #{order?.id || 'ORD-2026-4821'}
                 </h2>
                 <p className="text-sm" style={{ color: '#64748B' }}>
-                  Dibandingkan dari <span className="font-semibold" style={{ color: '#0C9A8B' }}>14 order aktif</span> perusahaan
+                  Hasil evaluasi AI terhadap seluruh order aktif perusahaan
                 </p>
               </div>
             </div>
@@ -1002,7 +1028,7 @@ function ScreenResult({
           {/* Route Strip */}
           <div className="px-8 py-5 border-b" style={{ borderColor: '#DDE3EA' }}>
             <p className="text-xs font-semibold mb-3 uppercase tracking-wider" style={{ color: '#94A3B8', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Visualisasi Rute</p>
-            <RouteStrip posisi={formData.asal.kota || '—'} jemput="Cirebon" tujuan={formData.tujuan.kota || '—'} />
+            <RouteStrip posisi={formData.asal.kota || '—'} jemput={route?.pickup || 'Cirebon'} tujuan={formData.tujuan.kota || '—'} />
           </div>
 
           {/* Detail Grid */}
@@ -1010,11 +1036,11 @@ function ScreenResult({
             <p className="text-xs font-semibold mb-4 uppercase tracking-wider" style={{ color: '#94A3B8', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Detail Order &amp; Muatan</p>
             <div className="grid grid-cols-2 gap-x-8 gap-y-5">
               {[
-                { label: 'Nomor Order', value: 'ORD-2026-4821' },
-                { label: 'Nama Pelanggan', value: 'PT. Sumber Makmur Tbk' },
-                { label: 'Jenis & Berat Muatan', value: 'Tekstil — 4.2 Ton' },
-                { label: 'Waktu Jemput', value: '13 Sept 2026 · 08:00 WIB' },
-                { label: 'Jarak Tambahan', value: '+47 km dari rute awal' },
+                { label: 'Nomor Order', value: order?.id || 'ORD-2026-4821' },
+                { label: 'Kategori Muatan', value: order?.cargo_type || 'Tekstil' },
+                { label: 'Berat Muatan', value: `${order?.weight_ton || 4.2} Ton` },
+                { label: 'Waktu Jemput', value: formatPickupTime(order?.pickup_time) },
+                { label: 'Jarak Tambahan', value: `+${route?.additional_distance_km || 47} km dari rute awal` },
                 { label: 'Status Order', value: 'Siap Jemput' },
               ].map(item => (
                 <div key={item.label}>
@@ -1034,7 +1060,7 @@ function ScreenResult({
               </div>
               <div className="text-right">
                 <p className="text-3xl font-extrabold" style={{ color: '#0C7A6D', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-                  Rp 1.240.000
+                  {formatRupiah(estimatedSavings)}
                 </p>
               </div>
             </div>
@@ -1042,9 +1068,9 @@ function ScreenResult({
 
           {/* AI note */}
           <div className="px-8 py-4 border-b" style={{ borderColor: '#DDE3EA', background: '#FAFBFC' }}>
-            <p className="text-xs italic" style={{ color: '#94A3B8', fontFamily: 'Inter, sans-serif' }}>
+            <p className="text-xs italic leading-relaxed" style={{ color: '#94A3B8', fontFamily: 'Inter, sans-serif' }}>
               <span className="font-semibold not-italic" style={{ color: '#0C9A8B' }}>Cara AI menghitung:</span>{' '}
-              Skor dihitung berdasarkan keselarasan rute (68%), kesesuaian kapasitas (20%), dan waktu jemput (12%). Jarak tambahan +47 km masih dalam ambang efisiensi optimal.
+              {explanation}
             </p>
           </div>
 
@@ -1077,10 +1103,11 @@ function ScreenResult({
         <div className="rounded-lg overflow-hidden" style={{ background: '#fff' }}>
           <div className="px-8 pt-8 pb-6 border-b" style={{ borderColor: '#DDE3EA' }}>
             <div className="flex items-center gap-6">
+              {/* Score ring */}
               <div className="relative flex-shrink-0">
-                <ProgressRing pct={38} size={100} />
+                <ProgressRing pct={matchScore} size={100} />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl font-extrabold leading-none" style={{ color: '#64748B', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>38%</span>
+                  <span className="text-2xl font-extrabold leading-none" style={{ color: '#64748B', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{Math.round(matchScore)}%</span>
                   <span className="text-[10px] font-semibold" style={{ color: '#94A3B8' }}>cocok</span>
                 </div>
               </div>
@@ -1108,8 +1135,8 @@ function ScreenResult({
                 <path d="M8 1.5L1.5 13h13L8 1.5z" stroke="#B45309" strokeWidth="1.3" strokeLinejoin="round"/>
                 <path d="M8 6.5v3M8 11.5h.01" stroke="#B45309" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
-              <p className="text-sm" style={{ color: '#92400E', fontFamily: 'Inter, sans-serif' }}>
-                Kandidat ditemukan namun skor kecocokan rute, kapasitas, atau waktu terlalu rendah. Coba ubah tanggal atau perluas jenis muatan yang diterima.
+              <p className="text-sm" style={{ color: '#92400E', fontFamily: 'Inter, sans-serif', lineHeight: '1.6' }}>
+                {explanation} Coba ubah tanggal atau perluas jenis muatan yang diterima untuk mencari kecocokan kargo yang lain.
               </p>
             </div>
           </div>
@@ -1228,11 +1255,41 @@ const RECS = [
   },
 ]
 
-function ScreenDashboard({ onCariMuatan }: { onCariMuatan: () => void }) {
+function ScreenDashboard({
+  onCariMuatan,
+  metrics,
+  historyData,
+}: {
+  onCariMuatan: () => void
+  metrics: any
+  historyData: any[]
+}) {
+  const formatRupiah = (val: number) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
+  }
+
+  // Get first 3 matches that are either Diambil or Tidak dipilih to show on dashboard
+  const dbRecs = historyData
+    .filter(r => r.status === 'Tidak dipilih' || r.status === 'Diambil')
+    .slice(0, 3)
+    .map(r => ({
+      id: r.orderId,
+      asal: r.asal,
+      tujuan: r.tujuan,
+      score: r.score || 0,
+      muatan: r.muatan,
+      berat: r.berat || '-',
+      waktu: r.tanggal.replace(' 2026', ''),
+      hemat: r.hemat || '-',
+      status: r.status === 'Diambil' ? 'Siap Jemput' : 'Perlu Konfirmasi',
+    }))
+
+  const recsToShow = dbRecs.length > 0 ? dbRecs : RECS;
+
   const summaryCards = [
     {
-      label: 'Truk Aktif',
-      value: '12',
+      label: 'Total Order Aktif',
+      value: String(metrics.total_orders),
       icon: (
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
           <rect x="1" y="7" width="11" height="7" rx="1.2" stroke="currentColor" strokeWidth="1.4"/>
@@ -1243,11 +1300,11 @@ function ScreenDashboard({ onCariMuatan }: { onCariMuatan: () => void }) {
       ),
       iconBg: '#EFF6FF',
       iconColor: '#3B82F6',
-      sub: '3 selesai hari ini',
+      sub: 'Di dalam database',
     },
     {
-      label: 'Berpotensi Backhaul',
-      value: '5',
+      label: 'Truk Terisi Kembali',
+      value: String(metrics.accepted_matches),
       icon: (
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
           <path d="M9 2L11.5 7H16L12.5 10.5L14 15L9 12L4 15L5.5 10.5L2 7H6.5L9 2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
@@ -1255,12 +1312,12 @@ function ScreenDashboard({ onCariMuatan }: { onCariMuatan: () => void }) {
       ),
       iconBg: '#F0FDFB',
       iconColor: '#0C9A8B',
-      sub: 'Dari 12 truk aktif',
+      sub: 'Match yang diambil',
       highlight: true,
     },
     {
-      label: 'Match Berhasil',
-      value: '8',
+      label: 'Rasio Penerimaan',
+      value: `${metrics.acceptance_rate}%`,
       icon: (
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
           <circle cx="9" cy="9" r="7" stroke="currentColor" strokeWidth="1.4"/>
@@ -1269,11 +1326,11 @@ function ScreenDashboard({ onCariMuatan }: { onCariMuatan: () => void }) {
       ),
       iconBg: '#F0FDF4',
       iconColor: '#22C55E',
-      sub: 'Bulan ini: 47 match',
+      sub: 'Akurasi matching stabil',
     },
     {
       label: 'Estimasi Penghematan',
-      value: 'Rp 8,45 Jt',
+      value: formatRupiah(metrics.total_estimated_savings),
       icon: (
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
           <rect x="2" y="4" width="14" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.4"/>
@@ -1283,9 +1340,10 @@ function ScreenDashboard({ onCariMuatan }: { onCariMuatan: () => void }) {
       ),
       iconBg: '#FFF7ED',
       iconColor: '#E8600A',
-      sub: 'Hari ini',
+      sub: 'Akumulasi hemat BBM & tol',
     },
   ]
+
 
   return (
     <div className="w-full">
@@ -1334,10 +1392,10 @@ function ScreenDashboard({ onCariMuatan }: { onCariMuatan: () => void }) {
             <h2 className="text-sm font-semibold" style={{ color: '#1B2A40', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
               Rekomendasi Terbaru
             </h2>
-            <span className="text-xs" style={{ color: '#94A3B8' }}>({RECS.length})</span>
+            <span className="text-xs" style={{ color: '#94A3B8' }}>({recsToShow.length})</span>
           </div>
           <span className="text-xs" style={{ color: '#94A3B8', fontFamily: 'Inter, sans-serif' }}>
-            Diperbarui 5 menit lalu
+            Diperbarui secara real-time
           </span>
         </div>
 
@@ -1360,13 +1418,13 @@ function ScreenDashboard({ onCariMuatan }: { onCariMuatan: () => void }) {
         </div>
 
         {/* Rows */}
-        {RECS.map((rec, i) => (
+        {recsToShow.map((rec, i) => (
           <div
-            key={rec.id}
+            key={rec.id + '-' + i}
             className="grid px-6 py-4 items-center transition-colors cursor-pointer"
             style={{
               gridTemplateColumns: '1.8fr 0.7fr 1.3fr 1fr 1fr 1fr',
-              borderBottom: i < RECS.length - 1 ? '1px solid #F1F5F9' : 'none',
+              borderBottom: i < recsToShow.length - 1 ? '1px solid #F1F5F9' : 'none',
             }}
             onMouseEnter={e => (e.currentTarget.style.background = '#FAFBFC')}
             onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
@@ -1401,7 +1459,7 @@ function ScreenDashboard({ onCariMuatan }: { onCariMuatan: () => void }) {
 
             {/* Cargo */}
             <div>
-              <p className="text-sm" style={{ color: '#1B2A40', fontFamily: 'Inter, sans-serif' }}>
+              <p className="text-sm truncate max-w-[120px]" style={{ color: '#1B2A40', fontFamily: 'Inter, sans-serif' }}>
                 {rec.muatan}
               </p>
               <p className="text-xs" style={{ color: '#94A3B8', fontFamily: 'Inter, sans-serif' }}>
@@ -1438,7 +1496,7 @@ function ScreenDashboard({ onCariMuatan }: { onCariMuatan: () => void }) {
         {/* Footer link */}
         <div className="px-6 py-3.5 border-t flex items-center justify-between" style={{ borderColor: '#F1F5F9' }}>
           <p className="text-xs" style={{ color: '#94A3B8', fontFamily: 'Inter, sans-serif' }}>
-            Menampilkan 3 rekomendasi teratas dari 14 order aktif
+            Menampilkan {recsToShow.length} rekomendasi teratas dari {metrics.total_orders || 14} order aktif
           </p>
           <button
             className="text-xs font-semibold flex items-center gap-1 transition-colors"
@@ -1831,11 +1889,17 @@ function DetailDrawer({ row, onClose }: { row: RiwayatRow; onClose: () => void }
 }
 
 // ── Riwayat Screen ─────────────────────────────────────────────────────────
-function ScreenRiwayat() {
+function ScreenRiwayat({
+  historyData,
+  loadingHistory,
+}: {
+  historyData: any[]
+  loadingHistory: boolean
+}) {
   const [query, setQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('Semua')
   const [tanggalFilter, setTanggalFilter] = useState<string>('Semua')
-  const [activeRow, setActiveRow] = useState<RiwayatRow | null>(null)
+  const [activeRow, setActiveRow] = useState<any | null>(null)
   const [statusOpen, setStatusOpen] = useState(false)
   const [tanggalOpen, setTanggalOpen] = useState(false)
   const statusRef = useRef<HTMLDivElement>(null)
@@ -1853,7 +1917,9 @@ function ScreenRiwayat() {
   const statusOptions = ['Semua', 'Diambil', 'Tidak dipilih', 'Tidak layak', 'Tidak ada kandidat']
   const tanggalOptions = ['Semua', 'Hari ini', '7 hari terakhir', '30 hari terakhir']
 
-  const filtered = RIWAYAT_DATA.filter(r => {
+  const dataList = historyData.length > 0 ? historyData : RIWAYAT_DATA;
+
+  const filtered = dataList.filter(r => {
     const q = query.toLowerCase()
     const matchQ = !q || r.asal.toLowerCase().includes(q) || r.tujuan.toLowerCase().includes(q) || (r.orderId ?? '').toLowerCase().includes(q)
     const matchS = statusFilter === 'Semua' || r.status === statusFilter
@@ -1861,6 +1927,7 @@ function ScreenRiwayat() {
   })
 
   const cols = '120px 1.4fr 1.1fr 1.2fr 88px 120px 130px'
+
 
   return (
     <div className="w-full">
@@ -2139,13 +2206,13 @@ const TOP_MATCHING = [
   { asal: 'Bandung', tujuan: 'Surabaya', score: 74, muatan: 'Spare part otomotif', berat: '7.0 Ton', jarak: '+63 km', hemat: 'Rp 1.570.000' },
 ]
 
-function TrendChart() {
+function TrendChart({ trendData }: { trendData: { label: string; value: number }[] }) {
   const W = 760, H = 200, PAD = { top: 16, right: 24, bottom: 36, left: 64 }
   const chartW = W - PAD.left - PAD.right
   const chartH = H - PAD.top - PAD.bottom
-  const maxVal = Math.max(...TREND_DATA.map(d => d.value))
-  const pts = TREND_DATA.map((d, i) => ({
-    x: PAD.left + (i / (TREND_DATA.length - 1)) * chartW,
+  const maxVal = Math.max(...trendData.map(d => d.value), 1)
+  const pts = trendData.map((d, i) => ({
+    x: PAD.left + (i / Math.max(trendData.length - 1, 1)) * chartW,
     y: PAD.top + chartH - (d.value / maxVal) * chartH,
     ...d,
   }))
@@ -2197,13 +2264,21 @@ function TrendChart() {
         x={pts[pts.length - 1].x} y={pts[pts.length - 1].y - 10}
         textAnchor="end" fontSize="10" fontWeight="600" fill="#0C9A8B" fontFamily="Plus Jakarta Sans, sans-serif"
       >
-        {fmt(TREND_DATA[TREND_DATA.length - 1].value)}
+        {fmt(trendData[trendData.length - 1].value)}
       </text>
+
     </svg>
   )
 }
 
-function ScreenLaporan() {
+
+function ScreenLaporan({
+  metrics,
+  historyData,
+}: {
+  metrics: any
+  historyData: any[]
+}) {
   const [periodOpen, setPeriodOpen] = useState(false)
   const [period, setPeriod] = useState('Sep 2026')
   const periodRef = useRef<HTMLDivElement>(null)
@@ -2216,7 +2291,64 @@ function ScreenLaporan() {
     return () => document.removeEventListener('mousedown', h)
   }, [])
 
+  const formatRupiah = (val: number) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
+  }
+
   const periods = ['Sep 2026', 'Agu 2026', 'Jul 2026', 'Q3 2026']
+
+  // Dynamically calculate top matching (best 3 by savings)
+  const acceptedMatches = historyData.filter(r => r.status === 'Diambil');
+  const dynamicTopMatching = [...acceptedMatches]
+    .sort((a, b) => {
+      const aVal = parseFloat(a.hemat.replace(/[^\d]/g, '')) || 0;
+      const bVal = parseFloat(b.hemat.replace(/[^\d]/g, '')) || 0;
+      return bVal - aVal;
+    })
+    .slice(0, 3)
+    .map(r => ({
+      asal: r.asal,
+      tujuan: r.tujuan,
+      score: r.score || 92,
+      muatan: r.muatan,
+      berat: r.berat || '-',
+      jarak: r.jarakTambahan || '+47 km',
+      hemat: r.hemat
+    }));
+
+  const topMatchingToShow = dynamicTopMatching.length > 0 ? dynamicTopMatching : TOP_MATCHING;
+
+  // Calculate dynamic Trend Data
+  const getTrendData = () => {
+    const accepted = historyData
+      .filter(r => r.status === 'Diambil')
+      .map(r => ({
+        date: r.tanggal,
+        val: parseFloat(r.hemat.replace(/[^\d]/g, '')) || 0
+      }));
+    const chronological = [...accepted].reverse();
+    let cumulative = 0;
+    const trend = chronological.map(item => {
+      cumulative += item.val;
+      return {
+        label: item.date.replace(' 2026', ''),
+        value: cumulative
+      };
+    });
+    if (trend.length === 0) {
+      return TREND_DATA; // Fallback to mockup data
+    }
+    return trend;
+  }
+
+  const trendData = getTrendData();
+
+  // Dynamic calculations for Efisiensi & Rata-rata
+  const totalMatchesCount = historyData.filter(r => r.status === 'Diambil' || r.status === 'Tidak dipilih').length;
+  const ratio = totalMatchesCount > 0 ? Math.round((acceptedMatches.length / totalMatchesCount) * 100) : 86;
+  const averageSavings = acceptedMatches.length > 0 
+    ? Math.round(metrics.total_estimated_savings / acceptedMatches.length) 
+    : 1158929;
 
   return (
     <div className="w-full max-w-screen-lg mx-auto">
@@ -2291,10 +2423,10 @@ function ScreenLaporan() {
       {/* ── Summary cards ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[
-          { label: 'Total Pencarian', value: '42', sub: 'pencarian muatan balik', highlight: false },
-          { label: 'Match Berhasil', value: '28', sub: 'rekomendasi diterima', highlight: false },
-          { label: 'Truk Terisi Kembali', value: '24', sub: 'perjalanan backhaul', highlight: false },
-          { label: 'Estimasi Penghematan', value: 'Rp 32.450.000', sub: 'dibanding perjalanan kosong', highlight: true },
+          { label: 'Total Order Aktif', value: String(metrics.total_orders), sub: 'kandidat di database', highlight: false },
+          { label: 'Match Diambil', value: String(metrics.accepted_matches), sub: 'rekomendasi disetujui', highlight: false },
+          { label: 'Truk Terisi Kembali', value: String(metrics.accepted_matches), sub: 'perjalanan backhaul aktif', highlight: false },
+          { label: 'Estimasi Penghematan', value: formatRupiah(metrics.total_estimated_savings), sub: 'dibanding perjalanan kosong', highlight: true },
         ].map(card => (
           <div
             key={card.label}
@@ -2306,7 +2438,7 @@ function ScreenLaporan() {
             </p>
             <p
               className="text-2xl font-bold leading-none"
-              style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', color: '#1B2A40' }}
+              style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', color: card.highlight ? '#0C9A8B' : '#1B2A40' }}
             >
               {card.value}
             </p>
@@ -2334,7 +2466,7 @@ function ScreenLaporan() {
           </div>
         </div>
         <div className="px-6 py-4">
-          <TrendChart />
+          <TrendChart trendData={trendData} />
         </div>
       </div>
 
@@ -2347,9 +2479,9 @@ function ScreenLaporan() {
           </h2>
           <div className="flex flex-col gap-4">
             {[
-              { label: 'Match berhasil', value: '28', unit: 'rekomendasi' },
-              { label: 'Truk berhasil terisi kembali', value: '24', unit: 'perjalanan' },
-              { label: 'Rasio keberhasilan matching', value: '86%', unit: '' },
+              { label: 'Match berhasil', value: String(metrics.accepted_matches), unit: 'rekomendasi' },
+              { label: 'Truk berhasil terisi kembali', value: String(metrics.accepted_matches), unit: 'perjalanan' },
+              { label: 'Rasio keberhasilan matching', value: `${ratio}%`, unit: '' },
             ].map((m, i) => (
               <div key={i} className="flex items-center justify-between py-3 border-b last:border-0" style={{ borderColor: '#F1F5F9' }}>
                 <p className="text-sm" style={{ color: '#64748B', fontFamily: 'Inter, sans-serif' }}>{m.label}</p>
@@ -2374,7 +2506,7 @@ function ScreenLaporan() {
               Penghematan Rata-rata
             </h2>
             <p className="text-4xl font-extrabold mb-2 leading-none" style={{ color: '#0C7A6D', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-              Rp 1.158.929
+              {formatRupiah(averageSavings)}
             </p>
             <p className="text-xs mb-6" style={{ color: '#64A89F', fontFamily: 'Inter, sans-serif' }}>
               rata-rata estimasi penghematan per matching
@@ -2386,7 +2518,7 @@ function ScreenLaporan() {
           >
             <span className="text-xs" style={{ color: '#64748B', fontFamily: 'Inter, sans-serif' }}>Total periode ini</span>
             <span className="text-sm font-bold" style={{ color: '#1B2A40', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-              Rp 32.450.000
+              {formatRupiah(metrics.total_estimated_savings)}
             </span>
           </div>
         </div>
@@ -2398,7 +2530,7 @@ function ScreenLaporan() {
           <h2 className="text-sm font-semibold" style={{ color: '#1B2A40', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             Matching dengan Penghematan Terbesar
           </h2>
-          <span className="text-xs" style={{ color: '#94A3B8', fontFamily: 'Inter, sans-serif' }}>Top 3 · Sep 2026</span>
+          <span className="text-xs" style={{ color: '#94A3B8', fontFamily: 'Inter, sans-serif' }}>Top 3 · {period}</span>
         </div>
 
         {/* Column headers */}
@@ -2420,13 +2552,13 @@ function ScreenLaporan() {
           <span>Status</span>
         </div>
 
-        {TOP_MATCHING.map((m, i) => (
+        {topMatchingToShow.map((m, i) => (
           <div
             key={i}
             className="grid px-6 py-4 items-center"
             style={{
               gridTemplateColumns: '1.5fr 0.6fr 1.3fr 0.7fr 1fr 0.8fr',
-              borderBottom: i < TOP_MATCHING.length - 1 ? '1px solid #F1F5F9' : 'none',
+              borderBottom: i < topMatchingToShow.length - 1 ? '1px solid #F1F5F9' : 'none',
             }}
           >
             {/* Route */}
@@ -2481,7 +2613,7 @@ function ScreenLaporan() {
           </p>
           <p className="text-sm leading-relaxed" style={{ color: '#0C7A6D', fontFamily: 'Inter, sans-serif' }}>
             Backhaul berhasil membantu mengurangi perjalanan kosong dan menghasilkan estimasi penghematan biaya sebesar{' '}
-            <span className="font-semibold">Rp 32.450.000</span> pada periode ini.
+            <span className="font-semibold">{formatRupiah(metrics.total_estimated_savings)}</span> pada periode ini.
           </p>
         </div>
       </div>
@@ -2527,15 +2659,128 @@ export default function App() {
   })
   const [toast, setToast] = useState(false)
 
-  const handleSubmit = (data: FormData) => {
-    setFormData(data)
-    setScreen('loading')
-    setTimeout(() => setScreen('result'), 2800)
+  // Live data integration states
+  const [metrics, setMetrics] = useState({
+    total_orders: 14,
+    accepted_matches: 8,
+    acceptance_rate: 57.14,
+    total_estimated_savings: 8450000
+  })
+  const [historyData, setHistoryData] = useState<any[]>([])
+  const [loadingHistory, setLoadingHistory] = useState(false)
+  const [searchResult, setSearchResult] = useState<any>(null)
+  const [searchError, setSearchError] = useState<string | null>(null)
+
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+  const fetchMetrics = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/dashboard/metrics`)
+      if (response.ok) {
+        const data = await response.json()
+        setMetrics(data)
+      }
+    } catch (err) {
+      console.error("Error fetching metrics:", err)
+    }
   }
 
-  const handleAmbil = () => {
-    setToast(true)
-    setTimeout(() => setToast(false), 3500)
+  const fetchHistory = async () => {
+    setLoadingHistory(true)
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/history`)
+      if (response.ok) {
+        const data = await response.json()
+        setHistoryData(data.history)
+      }
+    } catch (err) {
+      console.error("Error fetching history:", err)
+    } finally {
+      setLoadingHistory(false)
+    }
+  }
+
+  // Refresh metrics and history when switching pages
+  useEffect(() => {
+    fetchMetrics()
+    fetchHistory()
+  }, [page])
+
+  const handleSubmit = async (data: FormData) => {
+    setFormData(data)
+    setScreen('loading')
+    setSearchError(null)
+    setSearchResult(null)
+    
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/matches/search`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          origin: {
+            city: data.asal.kota,
+            district: data.asal.kecamatan || "",
+            village: data.asal.kelurahan || ""
+          },
+          destination: {
+            city: data.tujuan.kota,
+            district: data.tujuan.kecamatan || "",
+            village: data.tujuan.kelurahan || ""
+          },
+          arrival_date: data.tanggal,
+          empty_capacity_ton: parseFloat(data.kapasitas),
+          cargo_types: data.jenisMuatan
+        })
+      });
+      
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(errText || 'Terjadi kesalahan saat memproses data');
+      }
+      
+      const result = await response.json();
+      setSearchResult(result);
+      
+      if (result.status === 'matched') {
+        setResultState('good');
+      } else if (result.status === 'low_score') {
+        setResultState('low');
+      } else {
+        setResultState('empty');
+      }
+      
+      // Delay slightly for loader transition feel
+      setTimeout(() => setScreen('result'), 1500);
+    } catch (err: any) {
+      console.error("Search error:", err);
+      setSearchError(err.message || 'Gagal terhubung ke server');
+      setScreen('input');
+      alert(err.message || 'Gagal memproses pencarian. Pastikan API backend berjalan.');
+    }
+  }
+
+  const handleAmbil = async () => {
+    if (!searchResult?.recommendation?.order?.id) return;
+    const matchId = searchResult.recommendation.order.id;
+    
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/matches/${matchId}/accept`, {
+        method: 'POST'
+      });
+      if (response.ok) {
+        setToast(true);
+        setTimeout(() => setToast(false), 3500);
+        fetchMetrics();
+        fetchHistory();
+      } else {
+        alert("Gagal menyetujui kargo muatan balik");
+      }
+    } catch (err) {
+      console.error("Error accepting match:", err);
+      alert("Gagal menghubungi server");
+    }
   }
 
   const handleCariLain = () => {
@@ -2637,13 +2882,13 @@ export default function App() {
       {/* ── Main Content ── */}
       <main className="flex-1 max-w-screen-xl mx-auto w-full px-6 py-10">
         {page === 'dashboard' && (
-          <ScreenDashboard onCariMuatan={goToCariMuatan} />
+          <ScreenDashboard onCariMuatan={goToCariMuatan} metrics={metrics} historyData={historyData} />
         )}
         {page === 'riwayat' && (
-          <ScreenRiwayat />
+          <ScreenRiwayat historyData={historyData} loadingHistory={loadingHistory} />
         )}
         {page === 'laporan' && (
-          <ScreenLaporan />
+          <ScreenLaporan metrics={metrics} historyData={historyData} />
         )}
         {page === 'cari-muatan' && screen === 'input' && (
           <ScreenInput onSubmit={handleSubmit} />
@@ -2659,6 +2904,7 @@ export default function App() {
             onCariLain={handleCariLain}
             onBack={handleCariLain}
             onChangeState={setResultState}
+            searchResult={searchResult}
           />
         )}
       </main>

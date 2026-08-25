@@ -13,7 +13,7 @@ from datetime import date
 from typing import Mapping
 
 from .geo import point_to_segment_km
-from .preprocess import capacity_ratio, schedule_overlap_days
+from .preprocess import capacity_ratio, schedule_overlap_days, normalize_city
 from .semantic import SemanticScorer
 
 #: Canonical feature order (must match the scoring-model manifest).
@@ -52,8 +52,9 @@ class Order:
 
 def _coords(cities: Mapping[str, Mapping[str, float]], name: str) -> tuple[float, float]:
     """Resolve ``(lat, lon)`` for a city name, case-insensitively."""
+    norm_name = normalize_city(name)
     indexed = {key.strip().lower(): value for key, value in cities.items()}
-    point = indexed[name.strip().lower()]
+    point = indexed[norm_name.strip().lower()]
     return float(point["lat"]), float(point["lon"])
 
 
