@@ -10,8 +10,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Mapping
 
+import numpy as np
+
 from .features import Order, Truck, build_feature_vector
 from .scoring import MATCH_THRESHOLD, compose_score, explain, sub_scores
+from .semantic import SemanticScorer, category_phrase
 
 
 @dataclass(frozen=True)
@@ -27,17 +30,36 @@ class MatchResult:
     model_name: str | None = None
 
 
+def _batch_semantic_scores(
+    semantic: SemanticScorer, accepted_types: list[str], descriptions: list[str]
+) -> list[float]:
+    """Semantic score of every description vs the truck's accepted types.
+
+    Batches the embedding of all descriptions and category phrases into two
+    ONNX/TF-IDF calls instead of one per candidate, keeping inference well under
+    the 3s latency target. Flexible trucks (empty accepted list) score 1.0.
+    """
+    if not accepted_types:
+        return [1.0] * len(descriptions)
+    desc_vectors = semantic.encode(descriptions)  # (n, dim)
+    phrases = [category_phrase(category) for category in accepted_types]
+    cat_vectors = semantic.encode(phrases)  # (k, dim)
+    similarities = desc_vectors @ cat_vectors.T  # (n, k)
+    return [float(similarities[i].max()) for i in range(len(descriptions))]
+
+
 def find_best_match(
     truck: Truck,
     orders: list[Order],
     cities: Mapping[str, Mapping[str, float]],
-    semantic: Any,
+    semantic: SemanticScorer,
     scoring_model: Any = None,
     threshold: float = MATCH_THRESHOLD,
 ) -> MatchResult:
     """Score all orders for ``truck`` and return the single best outcome.
 
     Orders exceeding the truck's free capacity are excluded (never recommended).
+    Semantic similarity is computed in one batched pass for all candidates.
     """
     if not orders:
         return MatchResult(status="empty", best_order=None, candidate_count=0)
@@ -48,11 +70,17 @@ def find_best_match(
     if not candidates:
         return MatchResult(status="empty", best_order=None, candidate_count=len(orders))
 
+    sem_scores = _batch_semantic_scores(
+        semantic, truck.accepted_cargo_types, [o.cargo_description for o in candidates]
+    )
+
     best: tuple[float, Order | None, dict[str, float], dict[str, float]] = (
         -1.0, None, {}, {},
     )
-    for order in candidates:
-        features = build_feature_vector(truck, order, cities, semantic)
+    for order, sem_score in zip(candidates, sem_scores):
+        features = build_feature_vector(
+            truck, order, cities, semantic_score=sem_score
+        )
         sub = sub_scores(features)
         score = compose_score(features, sub, scoring_model)
         if score > best[0]:
