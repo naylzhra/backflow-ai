@@ -25,6 +25,16 @@ from app.schemas.match import (
     ScoreBreakdown,
 )
 
+CARGO_MAP = {
+    "tekstil & garmen": "tekstil & garmen",
+    "elektronik": "elektronik",
+    "makanan & minuman": "makanan & minuman",
+    "material bangunan": "bahan bangunan",
+    "hasil pertanian": "pertanian & pupuk",
+    "furnitur": "furnitur",
+    "spare part otomotif": "otomotif",
+}
+
 api_router = APIRouter()
 
 # Keep for backwards compatibility with tests
@@ -156,6 +166,12 @@ def save_matching_history(
 
 @api_router.post("/matches/search", response_model=MatchSearchResponse)
 def search_matches(request: MatchSearchRequest) -> MatchSearchResponse:
+    # Map frontend cargo types to backend canonical categories
+    mapped_cargo_types = [
+        CARGO_MAP.get(ct.lower(), ct.lower())
+        for ct in request.cargo_types
+    ]
+
     if IS_TESTING:
         # Fallback for original unit tests compatibility
         from app.ai_engine.matcher import match_backhaul
@@ -164,7 +180,7 @@ def search_matches(request: MatchSearchRequest) -> MatchSearchResponse:
             "destination": request.destination.model_dump(),
             "arrival_date": request.arrival_date,
             "empty_capacity_ton": request.empty_capacity_ton,
-            "cargo_types": request.cargo_types,
+            "cargo_types": mapped_cargo_types,
         }
         match_result = match_backhaul(truck_data, MOCK_ORDERS)
 
@@ -232,7 +248,7 @@ def search_matches(request: MatchSearchRequest) -> MatchSearchResponse:
         destination=request.destination.city,
         arrival_date=request.arrival_date,
         free_capacity_tons=request.empty_capacity_ton,
-        accepted_cargo_types=request.cargo_types
+        accepted_cargo_types=mapped_cargo_types
     )
 
     orders = [

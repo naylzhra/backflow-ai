@@ -941,7 +941,7 @@ function ScreenResult({
   const order = rec?.order;
   const route = rec?.route;
   const breakdown = rec?.score_breakdown;
-  const matchScore = rec?.match_score || 92;
+  const matchScore = rec?.match_score || (state === 'low' ? 42 : 92);
   const explanation = rec?.explanation || "Skor dihitung berdasarkan rute, kapasitas, jadwal, dan jenis muatan.";
   const estimatedSavings = rec?.estimated_savings || 0;
   
