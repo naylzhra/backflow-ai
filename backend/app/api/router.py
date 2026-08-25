@@ -117,7 +117,8 @@ def get_semantic_scorer(orders_descriptions: list[str]) -> SemanticScorer:
 def save_matching_history(
     origin: str, destination: str, arrival_date: date, empty_capacity_ton: float,
     cargo_types: list[str], order_id: str | None, match_score: float | None,
-    estimated_savings: float | None, status: str, explanation: str | None
+    estimated_savings: float | None, status: str, explanation: str | None,
+    truck_id: str | None = None, additional_distance_km: float | None = None,
 ) -> int:
     try:
         with get_db_connection() as conn:
@@ -125,15 +126,16 @@ def save_matching_history(
                 cur.execute(
                     """
                     INSERT INTO matching_history (
-                        origin_city, destination_city, arrival_date, empty_capacity_ton,
-                        cargo_types, order_id, match_score, estimated_savings, status, explanation
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        truck_id, origin_city, destination_city, arrival_date, empty_capacity_ton,
+                        cargo_types, order_id, match_score, additional_distance_km,
+                        estimated_savings, status, explanation
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;
                     """,
                     (
-                        origin, destination, arrival_date, empty_capacity_ton,
-                        json.dumps(cargo_types), order_id, match_score, estimated_savings,
-                        status, explanation
+                        truck_id, origin, destination, arrival_date, empty_capacity_ton,
+                        json.dumps(cargo_types), order_id, match_score, additional_distance_km,
+                        estimated_savings, status, explanation
                     )
                 )
                 history_id = cur.fetchone()[0]
@@ -214,8 +216,10 @@ def search_matches(request: MatchSearchRequest) -> MatchSearchResponse:
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error loading orders: {e}")
 
+    truck_id = request.truck_id or f"TRK-{datetime.utcnow().strftime('%Y%m%d%H%M%S')}"
+
     truck = Truck(
-        truck_id="TRK-SEARCH",
+        truck_id=truck_id,
         origin=request.origin.city,
         destination=request.destination.city,
         arrival_date=request.arrival_date,
@@ -265,7 +269,8 @@ def search_matches(request: MatchSearchRequest) -> MatchSearchResponse:
             match_score=None,
             estimated_savings=None,
             status="Tidak ada kandidat",
-            explanation="Tidak ada order aktif perusahaan yang memiliki rute sejajar pada tanggal tersebut."
+            explanation="Tidak ada order aktif perusahaan yang memiliki rute sejajar pada tanggal tersebut.",
+            truck_id=truck_id,
         )
         return MatchSearchResponse(
             status="no_match",
@@ -286,7 +291,8 @@ def search_matches(request: MatchSearchRequest) -> MatchSearchResponse:
             match_score=match_result.score,
             estimated_savings=None,
             status="Tidak layak",
-            explanation=match_result.explanation or "Kecocokan berada di bawah ambang batas efisiensi."
+            explanation=match_result.explanation or "Kecocokan berada di bawah ambang batas efisiensi.",
+            truck_id=truck_id,
         )
         return MatchSearchResponse(
             status="low_score",
@@ -324,7 +330,9 @@ def search_matches(request: MatchSearchRequest) -> MatchSearchResponse:
         match_score=match_result.score,
         estimated_savings=savings,
         status="Tidak dipilih",
-        explanation=match_result.explanation
+        explanation=match_result.explanation,
+        truck_id=truck_id,
+        additional_distance_km=additional_distance,
     )
 
     # Map sub-scores to ScoreBreakdown schema
@@ -491,7 +499,8 @@ def get_reports() -> dict:
         with conn.cursor() as cur:
             cur.execute(
                 """
-                SELECT h.order_id, o.cargo_category, o.weight_tons, h.estimated_savings
+                SELECT h.order_id, o.cargo_category, o.weight_tons, h.estimated_savings,
+                       h.truck_id, h.additional_distance_km
                 FROM matching_history h
                 JOIN orders o ON h.order_id = o.order_id
                 WHERE h.status = 'Diambil'
@@ -504,8 +513,9 @@ def get_reports() -> dict:
                     "match_id": r[0],
                     "cargo_type": r[1].capitalize(),
                     "weight_ton": r[2],
-                    "additional_distance_km": 47.0, # detour standard default
+                    "additional_distance_km": r[5] if r[5] is not None else 47.0,  # fallback for pre-migration rows
                     "estimated_savings": r[3],
+                    "truck_id": r[4],
                 }
                 for r in rows
             ]
@@ -526,7 +536,7 @@ def get_history() -> dict:
                 SELECT h.id, h.search_date, h.origin_city, h.destination_city, 
                        h.order_id, o.cargo_description, o.weight_tons, h.match_score, 
                        h.estimated_savings, h.status, h.empty_capacity_ton, h.explanation,
-                       o.cargo_category
+                       o.cargo_category, h.truck_id, h.additional_distance_km
                 FROM matching_history h
                 LEFT JOIN orders o ON h.order_id = o.order_id
                 ORDER BY h.search_date DESC;
@@ -537,12 +547,14 @@ def get_history() -> dict:
             for r in rows:
                 desc = r[5] or "Tidak ada"
                 cat = r[12].capitalize() if r[12] else "Tidak ada"
+                additional_distance_km = r[14]
                 history.append(
                     {
                         "id": str(r[0]),
                         "tanggal": r[1].strftime("%d %b %Y"),
                         "asal": r[2],
                         "tujuan": r[3],
+                        "truckId": r[13] or "-",
                         "orderId": r[4] or "-",
                         "muatan": cat,
                         "berat": f"{r[6]} Ton" if r[6] else "-",
@@ -550,7 +562,7 @@ def get_history() -> dict:
                         "hemat": f"Rp {int(r[8]):,}".replace(",", ".") if r[8] is not None else "-",
                         "status": r[9],
                         "kapasitas": f"{r[10]} Ton",
-                        "jarakTambahan": "+47 km" if r[4] else "-",
+                        "jarakTambahan": f"+{additional_distance_km:.0f} km" if additional_distance_km is not None else "-",
                         "aiNote": r[11] or "Tidak ada penjelasan.",
                     }
                 )

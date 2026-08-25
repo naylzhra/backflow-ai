@@ -4,6 +4,8 @@ import csv
 from pathlib import Path
 import psycopg
 
+from app.models.schemas import ALL_TABLE_DDL, MATCHING_HISTORY_MIGRATIONS
+
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://backflow:backflow@localhost:5432/backflow")
 
 # Clean DATABASE_URL for psycopg (psycopg doesn't recognize postgresql+psycopg schema)
@@ -18,47 +20,15 @@ def init_db():
     """Initialize database tables and seed initial data if tables are empty."""
     with get_db_connection() as conn:
         with conn.cursor() as cur:
-            # Create cities table
-            cur.execute("""
-                CREATE TABLE IF NOT EXISTS cities (
-                    name VARCHAR(100) PRIMARY KEY,
-                    lat DOUBLE PRECISION NOT NULL,
-                    lon DOUBLE PRECISION NOT NULL
-                );
-            """)
+            # Create tables (cities, orders / tabel_orders, matching_history / tabel_matches)
+            for ddl in ALL_TABLE_DDL:
+                cur.execute(ddl)
 
-            # Create orders table
-            cur.execute("""
-                CREATE TABLE IF NOT EXISTS orders (
-                    order_id VARCHAR(50) PRIMARY KEY,
-                    pickup_city VARCHAR(100) REFERENCES cities(name),
-                    dropoff_city VARCHAR(100) REFERENCES cities(name),
-                    pickup_start DATE NOT NULL,
-                    pickup_end DATE NOT NULL,
-                    weight_tons DOUBLE PRECISION NOT NULL,
-                    cargo_description TEXT NOT NULL,
-                    cargo_category VARCHAR(100) NOT NULL,
-                    status VARCHAR(50) NOT NULL
-                );
-            """)
+            # Apply additive migrations for columns introduced after the
+            # initial release (safe to re-run against an existing volume).
+            for migration in MATCHING_HISTORY_MIGRATIONS:
+                cur.execute(migration)
 
-            # Create matching_history table
-            cur.execute("""
-                CREATE TABLE IF NOT EXISTS matching_history (
-                    id SERIAL PRIMARY KEY,
-                    search_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    origin_city VARCHAR(100) NOT NULL,
-                    destination_city VARCHAR(100) NOT NULL,
-                    arrival_date DATE NOT NULL,
-                    empty_capacity_ton DOUBLE PRECISION NOT NULL,
-                    cargo_types TEXT NOT NULL,
-                    order_id VARCHAR(50) REFERENCES orders(order_id) NULL,
-                    match_score DOUBLE PRECISION NULL,
-                    estimated_savings DOUBLE PRECISION NULL,
-                    status VARCHAR(50) NOT NULL,
-                    explanation TEXT NULL
-                );
-            """)
             conn.commit()
 
     # Seed data if tables are empty

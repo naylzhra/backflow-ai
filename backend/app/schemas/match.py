@@ -15,6 +15,7 @@ class MatchSearchRequest(BaseModel):
     arrival_date: date
     empty_capacity_ton: float = Field(gt=0)
     cargo_types: list[str] = Field(default_factory=list)
+    truck_id: str | None = None
 
     @model_validator(mode="after")
     def validate_route_and_date(self):
