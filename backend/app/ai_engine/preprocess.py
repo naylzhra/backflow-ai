@@ -42,6 +42,7 @@ CITY_ALIASES: dict[str, str] = {
     "bandung": "Bandung",
     "kotabandung": "Bandung",
     "cirebon": "Cirebon",
+    "kotacirebon": "Cirebon",
     "semarang": "Semarang",
     "kotasemarang": "Semarang",
     "solo": "Solo",
@@ -76,10 +77,31 @@ CITY_ALIASES: dict[str, str] = {
 _TOKEN_RE = re.compile(r"[^a-z\s]+")
 
 
+CANONICAL_CITIES = [
+    "Bandar Lampung", "Bandung", "Bekasi", "Bogor", "Cirebon",
+    "Depok", "Jakarta", "Makassar", "Malang", "Medan",
+    "Palembang", "Pekanbaru", "Semarang", "Solo", "Surabaya",
+    "Tangerang", "Yogyakarta"
+]
+
+
 def normalize_city(name: str) -> str:
     """Normalize a city name: strip, lower-case, and apply the alias map."""
-    compact = re.sub(r"[^a-z]", "", name.strip().lower())
-    return CITY_ALIASES.get(compact, name.strip())
+    name_stripped = name.strip()
+    name_lower = name_stripped.lower()
+    
+    # 1. Try exact compact alias match
+    compact = re.sub(r"[^a-z]", "", name_lower)
+    if compact in CITY_ALIASES:
+        return CITY_ALIASES[compact]
+        
+    # 2. Try substring match against canonical cities
+    for canonical in CANONICAL_CITIES:
+        canonical_lower = canonical.lower()
+        if canonical_lower in name_lower or canonical_lower in compact:
+            return canonical
+            
+    return name_stripped
 
 
 def tokenize(text: str) -> list[str]:
