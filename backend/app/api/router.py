@@ -65,6 +65,9 @@ except Exception as e:
     SCORING_MODEL = None
 
 
+_semantic_scorer: SemanticScorer | None = None
+
+
 def get_cities_dict() -> dict[str, dict[str, float]]:
     with get_db_connection() as conn:
         with conn.cursor() as cur:
@@ -98,19 +101,24 @@ def get_active_orders() -> list[dict]:
 
 
 def get_semantic_scorer(orders_descriptions: list[str]) -> SemanticScorer:
-    artifacts_dir = Path(__file__).resolve().parents[2] / "models" / "artifacts"
+    global _semantic_scorer
+    if _semantic_scorer is not None:
+        return _semantic_scorer
+    artifacts_dir = Path(__file__).resolve().parents[1] / "models" / "artifacts"
     onnx_path = artifacts_dir / "embedding.onnx"
     if onnx_path.exists():
         try:
-            return SemanticScorer(
+            _semantic_scorer = SemanticScorer(
                 embedding_model=EmbeddingModel(
                     onnx_path=onnx_path,
                     tokenizer_path=artifacts_dir / "tokenizer.json",
                     config_path=artifacts_dir / "embedding_config.json",
                 )
             )
+            return _semantic_scorer
         except Exception as e:
             print(f"Error loading EmbeddingModel ONNX: {e}")
+            _semantic_scorer = None
     return SemanticScorer(corpus_texts=orders_descriptions)
 
 
