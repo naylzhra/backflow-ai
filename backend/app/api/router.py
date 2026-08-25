@@ -560,7 +560,8 @@ def get_history() -> dict:
                 SELECT h.id, h.search_date, h.origin_city, h.destination_city, 
                        h.order_id, o.cargo_description, o.weight_tons, h.match_score, 
                        h.estimated_savings, h.status, h.empty_capacity_ton, h.explanation,
-                       o.cargo_category, h.truck_id, h.additional_distance_km
+                       o.cargo_category, h.truck_id, h.additional_distance_km,
+                       h.arrival_date, o.pickup_start
                 FROM matching_history h
                 LEFT JOIN orders o ON h.order_id = o.order_id
                 ORDER BY h.search_date DESC;
@@ -572,6 +573,10 @@ def get_history() -> dict:
                 desc = r[5] or "Tidak ada"
                 cat = r[12].capitalize() if r[12] else "Tidak ada"
                 additional_distance_km = r[14]
+                
+                pickup_dt = r[16] if r[16] is not None else r[15]
+                pickup_str = pickup_dt.strftime("%d %b") if hasattr(pickup_dt, "strftime") else str(pickup_dt)
+                
                 history.append(
                     {
                         "id": str(r[0]),
@@ -588,6 +593,7 @@ def get_history() -> dict:
                         "kapasitas": f"{r[10]} Ton",
                         "jarakTambahan": f"+{additional_distance_km:.0f} km" if additional_distance_km is not None else "-",
                         "aiNote": r[11] or "Tidak ada penjelasan.",
+                        "waktuJemput": pickup_str,
                     }
                 )
             return {"history": history}

@@ -1277,7 +1277,7 @@ function ScreenDashboard({
       score: r.score || 0,
       muatan: r.muatan,
       berat: r.berat || '-',
-      waktu: r.tanggal.replace(' 2026', ''),
+      waktu: r.waktuJemput || r.tanggal.replace(' 2026', ''),
       hemat: r.hemat || '-',
       status: r.status === 'Diambil' ? 'Siap Jemput' : 'Perlu Konfirmasi',
     }))
@@ -1579,6 +1579,7 @@ interface RiwayatRow {
   kapasitas: string
   jarakTambahan: string | null
   aiNote: string
+  waktuJemput?: string
 }
 
 const RIWAYAT_DATA: RiwayatRow[] = [
